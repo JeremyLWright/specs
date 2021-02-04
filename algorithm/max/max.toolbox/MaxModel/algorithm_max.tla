@@ -20,12 +20,13 @@ Max(seq) ==
 \* We'll then use the model checker to check it matches the declarative spec.
 
  
-AllInputs == PT!SeqOf(IntSet, MaxSeqLen) \* Generate an inputset
+AllInputs == PT!SeqOf(IntSet, MaxSeqLen) \ {<<>>} \* Generate an inputset
 
 (*--algorithm max
 variables seq \in AllInputs, i = 1, max;
 begin
     max := seq[1];
+    assert Len(seq) > 0; \* update the algorithm to refect the exclusion of empty from AllInput
     while i <= Len(seq) do
         if max < seq[i] then
             max := seq[i];
@@ -34,7 +35,7 @@ begin
     end while;
     assert max = Max(seq) \* check against declarative version
 end algorithm *)
-\* BEGIN TRANSLATION (chksum(pcal) = "1aaa590b" /\ chksum(tla) = "a573a922")
+\* BEGIN TRANSLATION (chksum(pcal) = "34ca52ba" /\ chksum(tla) = "2507984f")
 CONSTANT defaultInitValue
 VARIABLES seq, i, max, pc
 
@@ -48,6 +49,8 @@ Init == (* Global variables *)
 
 Lbl_1 == /\ pc = "Lbl_1"
          /\ max' = seq[1]
+         /\ Assert(Len(seq) > 0, 
+                   "Failure of assertion at line 29, column 5.")
          /\ pc' = "Lbl_2"
          /\ UNCHANGED << seq, i >>
 
@@ -60,7 +63,7 @@ Lbl_2 == /\ pc = "Lbl_2"
                     /\ i' = i + 1
                     /\ pc' = "Lbl_2"
                ELSE /\ Assert(max = Max(seq), 
-                              "Failure of assertion at line 35, column 5.")
+                              "Failure of assertion at line 36, column 5.")
                     /\ pc' = "Done"
                     /\ UNCHANGED << i, max >>
          /\ seq' = seq
@@ -79,5 +82,5 @@ Termination == <>(pc = "Done")
     
 =============================================================================
 \* Modification History
-\* Last modified Thu Feb 04 09:12:49 MST 2021 by jeremy
+\* Last modified Thu Feb 04 09:45:20 MST 2021 by jeremy
 \* Created Thu Feb 04 08:57:52 MST 2021 by jeremy
