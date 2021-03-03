@@ -965,21 +965,36 @@ This is used in Flash Memory to minimize bit flips during self-discharge
 \@x{ {\p@lbrace}}%
 \@pvspace{8.0pt}%
 \@x{ {\p@while} {\p@lparen} {\TRUE} {\p@rparen} {\p@lbrace}}%
+\@x{\@s{16.4} actions . before \.{:=} flashCell {\p@semicolon}}%
  \@x{\@s{16.4} {\p@if} {\p@lparen} flashCell \.{=} {\langle} 0 ,\, 0 {\rangle}
  {\p@rparen} {\p@lbrace}}%
- \@x{\@s{35.24} actions . before \.{:=} {\langle} 0 ,\, 0 {\rangle}
+\@pvspace{8.0pt}%
+\@x{\@s{35.24} flashCell \.{:=} {\langle} 0 ,\, 1 {\rangle} {\p@semicolon}}%
+ \@x{\@s{35.24} actions . after \.{:=} {\langle} 0 ,\, 1 {\rangle}
  {\p@semicolon}}%
-\@x{\@s{35.24} flashCell \.{:=} {\langle} 1 ,\, 1 {\rangle} {\p@semicolon}}%
- \@x{\@s{35.24} actions . after \.{:=} {\langle} 1 ,\, 1 {\rangle}
+\@pvspace{8.0pt}%
+ \@x{\@s{16.4} {\p@rbrace} {\p@else} {\p@if} {\p@lparen} flashCell \.{=}
+ {\langle} 0 ,\, 1 {\rangle} {\p@rparen} {\p@lbrace}}%
+\@x{\@s{38.01} flashCell \.{:=} {\langle} 1 ,\, 1 {\rangle} {\p@semicolon}}%
+ \@x{\@s{38.01} actions . after \.{:=} {\langle} 1 ,\, 1 {\rangle}
  {\p@semicolon}}%
+\@pvspace{8.0pt}%
+ \@x{\@s{16.4} {\p@rbrace} {\p@else} {\p@if} {\p@lparen} flashCell \.{=}
+ {\langle} 1 ,\, 0 {\rangle} {\p@rparen} {\p@lbrace}}%
+\@pvspace{8.0pt}%
+\@x{\@s{38.01} flashCell \.{:=} {\langle} 0 ,\, 0 {\rangle} {\p@semicolon}}%
+ \@x{\@s{38.01} actions . after \.{:=} {\langle} 0 ,\, 0 {\rangle}
+ {\p@semicolon}}%
+\@pvspace{8.0pt}%
+\@x{\@s{16.4} {\p@rbrace} {\p@else} {\p@lbrace}}%
+\@pvspace{8.0pt}%
+\@x{\@s{38.01} flashCell \.{:=} {\langle} 1 ,\, 0 {\rangle} {\p@semicolon}}%
+ \@x{\@s{38.01} actions . after \.{:=} {\langle} 1 ,\, 0 {\rangle}
+ {\p@semicolon}}%
+\@pvspace{8.0pt}%
 \@x{\@s{16.4} {\p@rbrace}}%
-\@x{\@s{16.4} {\p@else}}%
- \@x{\@s{16.4} actions . before \.{:=} {\langle} 0 ,\, 0 {\rangle}
- {\p@semicolon}}%
-\@x{\@s{32.8} flashCell \.{:=} {\langle} 1 ,\, 1 {\rangle} {\p@semicolon}}%
- \@x{\@s{32.8} actions . after \.{:=} {\langle} 1 ,\, 1 {\rangle}
- {\p@semicolon}}%
-\@x{\@s{28.69} {\p@rbrace}}%
+\@pvspace{8.0pt}%
+\@x{ {\p@rbrace}}%
 \@x{ {\p@rbrace}}%
 \@x{ {\p@rbrace}}%
 \@y{}%
@@ -992,8 +1007,8 @@ end algorithm;
 \end{lcom}%
 \@x{}%
 \@y{\@s{0}%
- BEGIN TRANSLATION (\ensuremath{chksum(pcal) \.{=}} ``\ensuremath{58c9e3f0}''
- \ensuremath{\.{\land} chksum(tla) \.{=}} ``\ensuremath{8860fb5f}'')
+ BEGIN TRANSLATION (\ensuremath{chksum(pcal) \.{=}} ``\ensuremath{f604e792}''
+ \ensuremath{\.{\land} chksum(tla) \.{=}} ``\ensuremath{ce051695}'')
 }%
 \@xx{}%
 \@x{ {\VARIABLES} flashCell ,\, actions ,\, pc}%
@@ -1013,29 +1028,52 @@ end algorithm;
 \@x{\@s{37.72} \.{\land} pc \.{=}\@w{Lbl\_1}}%
 \@pvspace{8.0pt}%
 \@x{ Lbl\_1 \.{\defeq} \.{\land} pc \.{=}\@w{Lbl\_1}}%
-\@x{\@s{42.84} \.{\land} {\IF} flashCell \.{=} {\langle} 0 ,\, 0 {\rangle}}%
- \@x{\@s{66.11} \.{\THEN} \.{\land} actions \.{'} \.{=} [ actions {\EXCEPT}
- {\bang} . before \.{=} {\langle} 0 ,\, 0 {\rangle} ]}%
-\@x{\@s{97.42} \.{\land} flashCell \.{'} \.{=} {\langle} 1 ,\, 1 {\rangle}}%
-\@x{\@s{97.42} \.{\land} pc \.{'} \.{=}\@w{Lbl\_2}}%
- \@x{\@s{66.11} \.{\ELSE} \.{\land} actions \.{'} \.{=} [ actions {\EXCEPT}
- {\bang} . before \.{=} {\langle} 0 ,\, 0 {\rangle} ]}%
-\@x{\@s{97.42} \.{\land} pc \.{'} \.{=}\@w{Lbl\_3}}%
-\@x{\@s{97.42} \.{\land} {\UNCHANGED} flashCell}%
-\@pvspace{8.0pt}%
-\@x{ Lbl\_3 \.{\defeq} \.{\land} pc \.{=}\@w{Lbl\_3}}%
-\@x{\@s{42.84} \.{\land} flashCell \.{'} \.{=} {\langle} 1 ,\, 1 {\rangle}}%
  \@x{\@s{42.84} \.{\land} actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
- after \.{=} {\langle} 1 ,\, 1 {\rangle} ]}%
-\@x{\@s{42.84} \.{\land} pc \.{'} \.{=}\@w{Lbl\_1}}%
+ before \.{=} flashCell ]}%
+\@x{\@s{42.84} \.{\land} {\IF} flashCell \.{=} {\langle} 0 ,\, 0 {\rangle}}%
+ \@x{\@s{66.11} \.{\THEN} \.{\land} flashCell \.{'} \.{=} {\langle} 0 ,\, 1
+ {\rangle}}%
+\@x{\@s{97.42} \.{\land} pc \.{'} \.{=}\@w{Lbl\_2}}%
+ \@x{\@s{66.11} \.{\ELSE} \.{\land} {\IF} flashCell \.{=} {\langle} 0 ,\, 1
+ {\rangle}}%
+ \@x{\@s{120.69} \.{\THEN} \.{\land} flashCell \.{'} \.{=} {\langle} 1 ,\, 1
+ {\rangle}}%
+\@x{\@s{152.00} \.{\land} pc \.{'} \.{=}\@w{Lbl\_3}}%
+ \@x{\@s{120.69} \.{\ELSE} \.{\land} {\IF} flashCell \.{=} {\langle} 1 ,\, 0
+ {\rangle}}%
+ \@x{\@s{175.27} \.{\THEN} \.{\land} flashCell \.{'} \.{=} {\langle} 0 ,\, 0
+ {\rangle}}%
+\@x{\@s{206.58} \.{\land} pc \.{'} \.{=}\@w{Lbl\_4}}%
+ \@x{\@s{175.27} \.{\ELSE} \.{\land} flashCell \.{'} \.{=} {\langle} 1 ,\, 0
+ {\rangle}}%
+\@x{\@s{206.58} \.{\land} pc \.{'} \.{=}\@w{Lbl\_5}}%
 \@pvspace{8.0pt}%
 \@x{ Lbl\_2 \.{\defeq} \.{\land} pc \.{=}\@w{Lbl\_2}}%
  \@x{\@s{42.84} \.{\land} actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
- after \.{=} {\langle} 1 ,\, 1 {\rangle} ]}%
-\@x{\@s{42.84} \.{\land} pc \.{'} \.{=}\@w{Lbl\_3}}%
+ after \.{=} {\langle} 0 ,\, 1 {\rangle} ]}%
+\@x{\@s{42.84} \.{\land} pc \.{'} \.{=}\@w{Lbl\_1}}%
 \@x{\@s{42.84} \.{\land} {\UNCHANGED} flashCell}%
 \@pvspace{8.0pt}%
-\@x{ Next \.{\defeq} Lbl\_1 \.{\lor} Lbl\_3 \.{\lor} Lbl\_2}%
+\@x{ Lbl\_3 \.{\defeq} \.{\land} pc \.{=}\@w{Lbl\_3}}%
+ \@x{\@s{42.84} \.{\land} actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
+ after \.{=} {\langle} 1 ,\, 1 {\rangle} ]}%
+\@x{\@s{42.84} \.{\land} pc \.{'} \.{=}\@w{Lbl\_1}}%
+\@x{\@s{42.84} \.{\land} {\UNCHANGED} flashCell}%
+\@pvspace{8.0pt}%
+\@x{ Lbl\_4 \.{\defeq} \.{\land} pc \.{=}\@w{Lbl\_4}}%
+ \@x{\@s{42.84} \.{\land} actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
+ after \.{=} {\langle} 0 ,\, 0 {\rangle} ]}%
+\@x{\@s{42.84} \.{\land} pc \.{'} \.{=}\@w{Lbl\_1}}%
+\@x{\@s{42.84} \.{\land} {\UNCHANGED} flashCell}%
+\@pvspace{8.0pt}%
+\@x{ Lbl\_5 \.{\defeq} \.{\land} pc \.{=}\@w{Lbl\_5}}%
+ \@x{\@s{42.84} \.{\land} actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
+ after \.{=} {\langle} 1 ,\, 0 {\rangle} ]}%
+\@x{\@s{42.84} \.{\land} pc \.{'} \.{=}\@w{Lbl\_1}}%
+\@x{\@s{42.84} \.{\land} {\UNCHANGED} flashCell}%
+\@pvspace{8.0pt}%
+ \@x{ Next \.{\defeq} Lbl\_1 \.{\lor} Lbl\_2 \.{\lor} Lbl\_3 \.{\lor} Lbl\_4
+ \.{\lor} Lbl\_5}%
 \@pvspace{8.0pt}%
 \@x{ Spec\@s{1.46} \.{\defeq} Init \.{\land} {\Box} [ Next ]_{ vars}}%
 \@pvspace{8.0pt}%
@@ -1052,18 +1090,21 @@ end algorithm;
 }%
 \@xx{}%
 \@pvspace{8.0pt}%
-\@x{}%
-\@y{\@s{0}%
- Only 1 bit can change between two states.
- \ensuremath{{\langle}0,\,0{\rangle} \.{\rightarrow} {\langle}1,\,1{\rangle}}
- is an illegal transition
+\begin{lcom}{0}%
+\begin{cpar}{0}{F}{F}{0}{0}{}%
+ Only 1 bit can change between two states. \ensuremath{{\langle}0,\,0{\rangle}
+ \.{\rightarrow} {\langle}1,\,1{\rangle}} is an illegal transition.
+ Hence, ``distance'' between any two states is \ensuremath{\.{\,|\,} \{0,\,
+ 1\} \.{\,|\,}
 }%
-\@xx{}%
+\end{cpar}%
+\end{lcom}%
  \@x{ OneBitAtATime \.{\defeq} {\IF} actions . before \.{\neq} {\langle}
  {\rangle} \.{\land} actions . after \.{\neq} {\langle} {\rangle}}%
 \@x{\@s{16.4} \.{\THEN}}%
- \@x{\@s{32.8} ( actions . after [ 1 ] \.{+} actions . after [ 2 ] ) \.{-} (
- actions . before [ 1 ] \.{+} actions . after [ 2 ] ) \.{\in} \{ 1 \}}%
+ \@x{\@s{36.9} ( actions . after [ 1 ] \.{+} actions . after [ 2 ] ) \.{-} (
+ actions . before [ 1 ] \.{+} actions . before [ 2 ] )\@s{4.1} \.{\in} \{
+ \.{-} 1 ,\, 0 ,\, 1 \}}%
 \@x{\@s{16.4} \.{\ELSE} {\TRUE}}%
 \@pvspace{8.0pt}%
 \@x{}\bottombar\@xx{}%
@@ -1074,7 +1115,7 @@ end algorithm;
 \end{cpar}%
 \begin{cpar}{0}{F}{F}{0}{0}{}%
  \ensuremath{\.{\,\backslash\,}}* Last modified \ensuremath{Tue}
- \ensuremath{Mar} 02 17:00:40 \ensuremath{MST} 2021 by \ensuremath{jeremy
+ \ensuremath{Mar} 02 18:33:42 \ensuremath{MST} 2021 by \ensuremath{jeremy
 }%
 \end{cpar}%
 \begin{cpar}{0}{F}{F}{0}{0}{}%

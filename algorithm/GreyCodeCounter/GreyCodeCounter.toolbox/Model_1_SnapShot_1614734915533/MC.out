@@ -2,7 +2,7 @@
 TLC2 Version 2.16 of 31 December 2020 (rev: cdddf55)
 @!@!@ENDMSG 2262 @!@!@
 @!@!@STARTMSG 2187:0 @!@!@
-Running breadth-first search Model-Checking with fp 28 and seed -5326080895294581673 with 8 workers on 16 cores with 1214MB heap and 2730MB offheap memory [pid: 60130] (Mac OS X 10.16 x86_64, AdoptOpenJDK 14.0.1 x86_64, OffHeapDiskFPSet, DiskStateQueue).
+Running breadth-first search Model-Checking with fp 60 and seed -4093502152839979883 with 8 workers on 16 cores with 1214MB heap and 2730MB offheap memory [pid: 60082] (Mac OS X 10.16 x86_64, AdoptOpenJDK 14.0.1 x86_64, OffHeapDiskFPSet, DiskStateQueue).
 @!@!@ENDMSG 2187 @!@!@
 @!@!@STARTMSG 2220:0 @!@!@
 Starting SANY...
@@ -26,7 +26,7 @@ Semantic processing of module MC
 SANY finished.
 @!@!@ENDMSG 2219 @!@!@
 @!@!@STARTMSG 2185:0 @!@!@
-Starting... (2021-03-02 18:36:52)
+Starting... (2021-03-02 18:28:29)
 @!@!@ENDMSG 2185 @!@!@
 @!@!@STARTMSG 2189:0 @!@!@
 Computing initial states...
@@ -35,7 +35,7 @@ Computing initial states...
 Computed 2 initial states...
 @!@!@ENDMSG 2269 @!@!@
 @!@!@STARTMSG 2190:0 @!@!@
-Finished computing initial states: 4 distinct states generated at 2021-03-02 18:36:57.
+Finished computing initial states: 4 distinct states generated at 2021-03-02 18:28:34.
 @!@!@ENDMSG 2190 @!@!@
 @!@!@STARTMSG 2193:0 @!@!@
 Model checking completed. No error has been found.
@@ -44,7 +44,7 @@ Model checking completed. No error has been found.
   calculated (optimistic):  val = 3.5E-18
 @!@!@ENDMSG 2193 @!@!@
 @!@!@STARTMSG 2201:0 @!@!@
-The coverage statistics at 2021-03-02 18:36:57
+The coverage statistics at 2021-03-02 18:28:34
 @!@!@ENDMSG 2201 @!@!@
 @!@!@STARTMSG 2773:0 @!@!@
 <Init line 49, col 1 to line 49, col 4 of module GreyCodeCounter>: 4:4
@@ -170,31 +170,31 @@ The coverage statistics at 2021-03-02 18:36:57
   line 95, col 11 to line 95, col 59 of module GreyCodeCounter: 16
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2774:0 @!@!@
-<OneBitAtATime line 101, col 1 to line 101, col 13 of module GreyCodeCounter>
+<OneBitAtATime line 98, col 1 to line 98, col 13 of module GreyCodeCounter>
 @!@!@ENDMSG 2774 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  line 101, col 18 to line 104, col 13 of module GreyCodeCounter: 16
+  line 98, col 18 to line 101, col 13 of module GreyCodeCounter: 16
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 101, col 21 to line 101, col 67 of module GreyCodeCounter: 16
+  |line 98, col 21 to line 98, col 67 of module GreyCodeCounter: 16
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  ||line 101, col 21 to line 101, col 42 of module GreyCodeCounter: 16
+  ||line 98, col 21 to line 98, col 42 of module GreyCodeCounter: 16
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  ||line 101, col 47 to line 101, col 67 of module GreyCodeCounter: 12
+  ||line 98, col 47 to line 98, col 67 of module GreyCodeCounter: 12
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 103, col 10 to line 103, col 104 of module GreyCodeCounter: 8
+  |line 100, col 9 to line 100, col 102 of module GreyCodeCounter: 8
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2221:0 @!@!@
-  |line 104, col 10 to line 104, col 13 of module GreyCodeCounter: 8
+  |line 101, col 10 to line 101, col 13 of module GreyCodeCounter: 8
 @!@!@ENDMSG 2221 @!@!@
 @!@!@STARTMSG 2202:0 @!@!@
 End of statistics.
 @!@!@ENDMSG 2202 @!@!@
 @!@!@STARTMSG 2200:0 @!@!@
-Progress(4) at 2021-03-02 18:36:57: 20 states generated (187 s/min), 16 distinct states found (150 ds/min), 0 states left on queue.
+Progress(4) at 2021-03-02 18:28:34: 20 states generated (203 s/min), 16 distinct states found (162 ds/min), 0 states left on queue.
 @!@!@ENDMSG 2200 @!@!@
 @!@!@STARTMSG 2199:0 @!@!@
 20 states generated, 16 distinct states found, 0 states left on queue.
@@ -206,5 +206,5 @@ The depth of the complete state graph search is 4.
 The average outdegree of the complete state graph is 1 (minimum is 0, the maximum 1 and the 95th percentile is 1).
 @!@!@ENDMSG 2268 @!@!@
 @!@!@STARTMSG 2186:0 @!@!@
-Finished in 6399ms at (2021-03-02 18:36:57)
+Finished in 5914ms at (2021-03-02 18:28:34)
 @!@!@ENDMSG 2186 @!@!@

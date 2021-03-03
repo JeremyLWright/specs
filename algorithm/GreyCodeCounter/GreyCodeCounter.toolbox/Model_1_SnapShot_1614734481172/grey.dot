@@ -1,0 +1,33 @@
+strict digraph DiskGraph {
+nodesep=0.35;
+subgraph cluster_graph {
+color="white";
+2585663098996210806 [label="/\\ flashCell = <<0, 0>>\n/\\ pc = \"Lbl_1\"\n/\\ actions = [before |-> <<>>, after |-> <<>>]",style = filled]
+7566719582900414877 [label="/\\ flashCell = <<0, 1>>\n/\\ pc = \"Lbl_1\"\n/\\ actions = [before |-> <<>>, after |-> <<>>]",style = filled]
+8576809609354283063 [label="/\\ flashCell = <<1, 0>>\n/\\ pc = \"Lbl_1\"\n/\\ actions = [before |-> <<>>, after |-> <<>>]",style = filled]
+4460410091744288220 [label="/\\ flashCell = <<1, 1>>\n/\\ pc = \"Lbl_1\"\n/\\ actions = [before |-> <<>>, after |-> <<>>]",style = filled]
+8576809609354283063 -> 107668775575564326 [label="",color="black",fontcolor="black"];
+107668775575564326 [label="/\\ flashCell = <<0, 0>>\n/\\ pc = \"Lbl_4\"\n/\\ actions = [before |-> <<1, 0>>, after |-> <<>>]"];
+4460410091744288220 -> -5151926639875668689 [label="",color="black",fontcolor="black"];
+-5151926639875668689 [label="/\\ flashCell = <<1, 0>>\n/\\ pc = \"Lbl_5\"\n/\\ actions = [before |-> <<1, 1>>, after |-> <<>>]"];
+7566719582900414877 -> 2724541813494453712 [label="",color="black",fontcolor="black"];
+2724541813494453712 [label="/\\ flashCell = <<1, 1>>\n/\\ pc = \"Lbl_3\"\n/\\ actions = [before |-> <<0, 1>>, after |-> <<>>]"];
+2585663098996210806 -> -7191775324583304999 [label="",color="black",fontcolor="black"];
+-7191775324583304999 [label="/\\ flashCell = <<0, 1>>\n/\\ pc = \"Lbl_2\"\n/\\ actions = [before |-> <<0, 0>>, after |-> <<>>]"];
+-5151926639875668689 -> -7061990443935014736 [label="",color="black",fontcolor="black"];
+-7061990443935014736 [label="/\\ flashCell = <<1, 0>>\n/\\ pc = \"Lbl_1\"\n/\\ actions = [before |-> <<1, 1>>, after |-> <<1, 0>>]"];
+-7191775324583304999 -> 5910225648430285094 [label="",color="black",fontcolor="black"];
+5910225648430285094 [label="/\\ flashCell = <<0, 1>>\n/\\ pc = \"Lbl_1\"\n/\\ actions = [before |-> <<0, 0>>, after |-> <<0, 1>>]"];
+107668775575564326 -> -993940650633337867 [label="",color="black",fontcolor="black"];
+-993940650633337867 [label="/\\ flashCell = <<0, 0>>\n/\\ pc = \"Lbl_1\"\n/\\ actions = [before |-> <<1, 0>>, after |-> <<0, 0>>]"];
+2724541813494453712 -> 4453853100552618595 [label="",color="black",fontcolor="black"];
+4453853100552618595 [label="/\\ flashCell = <<1, 1>>\n/\\ pc = \"Lbl_1\"\n/\\ actions = [before |-> <<0, 1>>, after |-> <<1, 1>>]"];
+5910225648430285094 -> -7970943762828279333 [label="",color="black",fontcolor="black"];
+-7970943762828279333 [label="/\\ flashCell = <<1, 1>>\n/\\ pc = \"Lbl_3\"\n/\\ actions = [before |-> <<0, 1>>, after |-> <<0, 1>>]"];
+4453853100552618595 -> 6040043866071400387 [label="",color="black",fontcolor="black"];
+6040043866071400387 [label="/\\ flashCell = <<1, 0>>\n/\\ pc = \"Lbl_5\"\n/\\ actions = [before |-> <<1, 1>>, after |-> <<1, 1>>]"];
+{rank = same; 7566719582900414877;2585663098996210806;8576809609354283063;4460410091744288220;}
+{rank = same; -7191775324583304999;107668775575564326;-5151926639875668689;2724541813494453712;}
+{rank = same; 4453853100552618595;5910225648430285094;}
+}
+}

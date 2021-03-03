@@ -14,24 +14,20 @@ variables
 while (TRUE) { 
     actions.before := flashCell;
     if (flashCell = <<0, 0>>) {
-    
-        flashCell := <<0,1>>;
-        actions.after := <<0,1>>;
+       
+        flashCell := <<1,1>>;
+        actions.after := <<1,1>>;
         
     } else if (flashCell = <<0, 1>>) {
         flashCell := <<1,1>>;
         actions.after := <<1,1>>;
         
     } else if (flashCell = <<1, 0>>) {
-    
         flashCell := <<0,0>>;
         actions.after := <<0,0>>;
-    
     } else {
-    
         flashCell := <<1,0>>;
         actions.after := <<1,0>>;
-    
     }
        
 }
@@ -41,7 +37,7 @@ end algorithm;
 *)
 
 
-\* BEGIN TRANSLATION (chksum(pcal) = "f604e792" /\ chksum(tla) = "ce051695")
+\* BEGIN TRANSLATION (chksum(pcal) = "4a04cd27" /\ chksum(tla) = "aea81625")
 VARIABLES flashCell, actions, pc
 
 vars == << flashCell, actions, pc >>
@@ -54,7 +50,7 @@ Init == (* Global variables *)
 Lbl_1 == /\ pc = "Lbl_1"
          /\ actions' = [actions EXCEPT !.before = flashCell]
          /\ IF flashCell = <<0, 0>>
-               THEN /\ flashCell' = <<0,1>>
+               THEN /\ flashCell' = <<1,1>>
                     /\ pc' = "Lbl_2"
                ELSE /\ IF flashCell = <<0, 1>>
                           THEN /\ flashCell' = <<1,1>>
@@ -66,7 +62,7 @@ Lbl_1 == /\ pc = "Lbl_1"
                                           /\ pc' = "Lbl_5"
 
 Lbl_2 == /\ pc = "Lbl_2"
-         /\ actions' = [actions EXCEPT !.after = <<0,1>>]
+         /\ actions' = [actions EXCEPT !.after = <<1,1>>]
          /\ pc' = "Lbl_1"
          /\ UNCHANGED flashCell
 
@@ -94,16 +90,13 @@ Spec == Init /\ [][Next]_vars
 
 TypeOk == flashCell[1] \in {0, 1} /\ flashCell[2] \in {0,1} \* They are 1 indexed!
 
-(*
-Only 1 bit can change between two states. <<0,0>> -> <<1,1>> is an illegal transition.
-Hence, "distance" between any two states is | {0, 1} |
-*)
+\* Only 1 bit can change between two states. <<0,0>> -> <<1,1>> is an illegal transition
 OneBitAtATime == IF actions.before /= <<>> /\ actions.after /= <<>> 
     THEN
-         (actions.after[1] + actions.after[2]) - (actions.before[1] + actions.before[2])  \in {-1, 0, 1} 
+        (actions.after[1]+ actions.after[2]) - (actions.before[1] + actions.before[2]) \in {1}
     ELSE TRUE
 
 =============================================================================
 \* Modification History
-\* Last modified Tue Mar 02 18:33:42 MST 2021 by jeremy
+\* Last modified Tue Mar 02 18:19:01 MST 2021 by jeremy
 \* Created Tue Mar 02 16:05:58 MST 2021 by jeremy
