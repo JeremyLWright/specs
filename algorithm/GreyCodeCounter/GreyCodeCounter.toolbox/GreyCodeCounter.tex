@@ -1079,6 +1079,12 @@ end algorithm;
 \@pvspace{8.0pt}%
 \@x{}%
 \@y{\@s{0}%
+ \ensuremath{{\Box}[NextVariables]} ``OR'' \ensuremath{\_unchanged\_vars
+}}%
+\@xx{}%
+\@pvspace{8.0pt}%
+\@x{}%
+\@y{\@s{0}%
  END TRANSLATION
 }%
 \@xx{}%
@@ -1098,15 +1104,43 @@ end algorithm;
  1\} \.{\,|\,}
 }%
 \end{cpar}%
+\vshade{5.0}%
+\begin{cpar}{0}{F}{F}{0}{0}{}%
+ \ensuremath{OneBitAtATime \.{\defeq} {\IF}} \ensuremath{actions.before
+ \.{\neq} {\langle}{\rangle} \.{\land} actions.after \.{\neq}
+ {\langle}{\rangle}
+}%
+\end{cpar}%
+\begin{cpar}{0}{T}{F}{10.0}{0}{}%
+\ensuremath{\.{\THEN}
+}%
+\end{cpar}%
+\begin{cpar}{0}{T}{F}{12.5}{0}{}%
+ (\ensuremath{actions.after[1] \.{+} actions.after[2]) \.{-}
+ (actions.before[1] \.{+} actions.before[2]}) \ensuremath{\.{\in} \{\.{-}1,\,
+ 0,\, 1\}
+}%
+\end{cpar}%
+\begin{cpar}{1}{F}{F}{0}{0}{}%
+\ensuremath{\.{\ELSE} {\TRUE}
+}%
+\end{cpar}%
 \end{lcom}%
- \@x{ OneBitAtATime \.{\defeq} {\IF} actions . before \.{\neq} {\langle}
- {\rangle} \.{\land} actions . after \.{\neq} {\langle} {\rangle}}%
-\@x{\@s{16.4} \.{\THEN}}%
- \@x{\@s{36.9} ( actions . after [ 1 ] \.{+} actions . after [ 2 ] ) \.{-} (
- actions . before [ 1 ] \.{+} actions . before [ 2 ] )\@s{4.1} \.{\in} \{
- \.{-} 1 ,\, 0 ,\, 1 \}}%
-\@x{\@s{16.4} \.{\ELSE} {\TRUE}}%
+\@x{ OurFriendship \.{\defeq} HackingDay \.{\implies} {\Box} ( Friends )}%
+\@pvspace{16.0pt}%
+\@x{}%
+\@y{%
+ \ensuremath{OneBitAtATime \.{\defeq}} (\ensuremath{flashCell\.{'}[1] \.{+}
+ flashCell\.{'}[2] \.{-} (flashCell[1] \.{+} flashCell[2]}))
+ \ensuremath{\.{\in} \{\.{-}1,\,0,\,1\}
+}}%
+\@xx{}%
 \@pvspace{8.0pt}%
+\@x{}%
+\@y{%
+ \ensuremath{AlwaysOneBitAtATime \.{\defeq} {\Box}([OneBitAtATime]\_flashCell)
+}}%
+\@xx{}%
 \@x{}\bottombar\@xx{}%
 \setboolean{shading}{false}
 \begin{lcom}{0}%
@@ -1114,8 +1148,8 @@ end algorithm;
 \ensuremath{\.{\,\backslash\,}}* Modification History
 \end{cpar}%
 \begin{cpar}{0}{F}{F}{0}{0}{}%
- \ensuremath{\.{\,\backslash\,}}* Last modified \ensuremath{Tue}
- \ensuremath{Mar} 02 18:33:42 \ensuremath{MST} 2021 by \ensuremath{jeremy
+ \ensuremath{\.{\,\backslash\,}}* Last modified \ensuremath{Fri}
+ \ensuremath{Mar} 05 10:26:11 \ensuremath{MST} 2021 by \ensuremath{jeremy
 }%
 \end{cpar}%
 \begin{cpar}{0}{F}{F}{0}{0}{}%

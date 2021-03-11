@@ -1,0 +1,128 @@
+strict digraph DiskGraph {
+nodesep=0.35;
+subgraph cluster_graph {
+color="white";
+-5981131645039120853 [label="/\\ smallJug = 0\n/\\ bigJug = 0",style = filled]
+-5981131645039120853 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+2592114975108630644 [label="/\\ smallJug = 3\n/\\ bigJug = 0"];
+2592114975108630644 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+-5981131645039120853 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+-1950330936256331760 [label="/\\ smallJug = 0\n/\\ bigJug = 5"];
+2592114975108630644 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+7775679142618916431 [label="/\\ smallJug = 3\n/\\ bigJug = 5"];
+-1950330936256331760 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+2592114975108630644 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+-5981131645039120853 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+2592114975108630644 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+7775679142618916431 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+-1950330936256331760 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+7775679142618916431 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+-1950330936256331760 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+-5981131645039120853 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+-1950330936256331760 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+7775679142618916431 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+7775679142618916431 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+-5981131645039120853 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+-1950330936256331760 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+2592114975108630644 -> 1130822060542894681 [label="",color="black",fontcolor="black"];
+1130822060542894681 [label="/\\ smallJug = 0\n/\\ bigJug = 3"];
+7775679142618916431 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+-5981131645039120853 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+1130822060542894681 -> -9171943413738650618 [label="",color="black",fontcolor="black"];
+-9171943413738650618 [label="/\\ smallJug = 3\n/\\ bigJug = 3"];
+7775679142618916431 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+-1950330936256331760 -> 8848686487047956915 [label="",color="black",fontcolor="black"];
+8848686487047956915 [label="/\\ smallJug = 3\n/\\ bigJug = 2"];
+-9171943413738650618 -> -9171943413738650618 [label="",color="black",fontcolor="black"];
+1130822060542894681 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+2592114975108630644 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+1130822060542894681 -> 1130822060542894681 [label="",color="black",fontcolor="black"];
+-9171943413738650618 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+8848686487047956915 -> 8848686487047956915 [label="",color="black",fontcolor="black"];
+-9171943413738650618 -> 1130822060542894681 [label="",color="black",fontcolor="black"];
+8848686487047956915 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+1130822060542894681 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+8848686487047956915 -> -735472290887594004 [label="",color="black",fontcolor="black"];
+-735472290887594004 [label="/\\ smallJug = 0\n/\\ bigJug = 2"];
+-9171943413738650618 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+1130822060542894681 -> 1130822060542894681 [label="",color="black",fontcolor="black"];
+8848686487047956915 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+-735472290887594004 -> 8848686487047956915 [label="",color="black",fontcolor="black"];
+1130822060542894681 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+-9171943413738650618 -> -7056491655326948827 [label="",color="black",fontcolor="black"];
+-7056491655326948827 [label="/\\ smallJug = 1\n/\\ bigJug = 5"];
+8848686487047956915 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+-735472290887594004 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+-7056491655326948827 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+8848686487047956915 -> 8848686487047956915 [label="",color="black",fontcolor="black"];
+-7056491655326948827 -> -7056491655326948827 [label="",color="black",fontcolor="black"];
+-7056491655326948827 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+-9171943413738650618 -> -9171943413738650618 [label="",color="black",fontcolor="black"];
+-7056491655326948827 -> -3025427102177539042 [label="",color="black",fontcolor="black"];
+-3025427102177539042 [label="/\\ smallJug = 1\n/\\ bigJug = 0"];
+-735472290887594004 -> -735472290887594004 [label="",color="black",fontcolor="black"];
+-3025427102177539042 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+-7056491655326948827 -> -7056491655326948827 [label="",color="black",fontcolor="black"];
+-3025427102177539042 -> -7056491655326948827 [label="",color="black",fontcolor="black"];
+-7056491655326948827 -> -9171943413738650618 [label="",color="black",fontcolor="black"];
+-3025427102177539042 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+-735472290887594004 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+-3025427102177539042 -> -3025427102177539042 [label="",color="black",fontcolor="black"];
+-735472290887594004 -> -735472290887594004 [label="",color="black",fontcolor="black"];
+-3025427102177539042 -> 6234300200463975326 [label="",color="black",fontcolor="black"];
+6234300200463975326 [label="/\\ smallJug = 0\n/\\ bigJug = 1"];
+-735472290887594004 -> 6414336118716901953 [label="",color="black",fontcolor="black"];
+6414336118716901953 [label="/\\ smallJug = 2\n/\\ bigJug = 0"];
+6414336118716901953 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+6234300200463975326 -> -2773261193752140351 [label="",color="black",fontcolor="black"];
+-2773261193752140351 [label="/\\ smallJug = 3\n/\\ bigJug = 1"];
+-3025427102177539042 -> -3025427102177539042 [label="",color="black",fontcolor="black"];
+6414336118716901953 -> 1231035872958268538 [label="",color="black",fontcolor="black"];
+1231035872958268538 [label="/\\ smallJug = 2\n/\\ bigJug = 5"];
+-2773261193752140351 -> -2773261193752140351 [label="",color="black",fontcolor="black"];
+6234300200463975326 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+-2773261193752140351 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+6234300200463975326 -> 6234300200463975326 [label="",color="black",fontcolor="black"];
+-2773261193752140351 -> 6234300200463975326 [label="",color="black",fontcolor="black"];
+6234300200463975326 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+1231035872958268538 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+6234300200463975326 -> 6234300200463975326 [label="",color="black",fontcolor="black"];
+6414336118716901953 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+6234300200463975326 -> -3025427102177539042 [label="",color="black",fontcolor="black"];
+6414336118716901953 -> 6414336118716901953 [label="",color="black",fontcolor="black"];
+1231035872958268538 -> 1231035872958268538 [label="",color="black",fontcolor="black"];
+-2773261193752140351 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+1231035872958268538 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+-2773261193752140351 -> 2203781039609458085 [label="",color="black",fontcolor="black"];
+2203781039609458085 [label="/\\ smallJug = 0\n/\\ bigJug = 4"];
+6414336118716901953 -> -735472290887594004 [label="",color="black",fontcolor="black"];
+2203781039609458085 -> -7957106763153290246 [label="",color="black",fontcolor="black"];
+-7957106763153290246 [label="/\\ smallJug = 3\n/\\ bigJug = 4"];
+6414336118716901953 -> 6414336118716901953 [label="",color="black",fontcolor="black"];
+2203781039609458085 -> -1950330936256331760 [label="",color="black",fontcolor="black"];
+-2773261193752140351 -> -2773261193752140351 [label="",color="black",fontcolor="black"];
+1231035872958268538 -> 6414336118716901953 [label="",color="black",fontcolor="black"];
+2203781039609458085 -> 2203781039609458085 [label="",color="black",fontcolor="black"];
+-7957106763153290246 -> -7957106763153290246 [label="",color="black",fontcolor="black"];
+1231035872958268538 -> 1231035872958268538 [label="",color="black",fontcolor="black"];
+-7957106763153290246 -> 7775679142618916431 [label="",color="black",fontcolor="black"];
+1231035872958268538 -> -7957106763153290246 [label="",color="black",fontcolor="black"];
+-7957106763153290246 -> 2203781039609458085 [label="",color="black",fontcolor="black"];
+2203781039609458085 -> -5981131645039120853 [label="",color="black",fontcolor="black"];
+-7957106763153290246 -> 2592114975108630644 [label="",color="black",fontcolor="black"];
+-7957106763153290246 -> 1231035872958268538 [label="",color="black",fontcolor="black"];
+2203781039609458085 -> 2203781039609458085 [label="",color="black",fontcolor="black"];
+-7957106763153290246 -> -7957106763153290246 [label="",color="black",fontcolor="black"];
+2203781039609458085 -> -2773261193752140351 [label="",color="black",fontcolor="black"];
+{rank = same; -5981131645039120853;}
+{rank = same; 2592114975108630644;-1950330936256331760;}
+{rank = same; 1130822060542894681;7775679142618916431;8848686487047956915;}
+{rank = same; -9171943413738650618;-735472290887594004;}
+{rank = same; -7056491655326948827;6414336118716901953;}
+{rank = same; 1231035872958268538;-3025427102177539042;}
+{rank = same; 6234300200463975326;}
+{rank = same; -2773261193752140351;}
+{rank = same; 2203781039609458085;}
+{rank = same; -7957106763153290246;}
+}
+}
