@@ -1,0 +1,12 @@
+State 1:
+flashCell = <<0, 0>>
+
+State 2:
+flashCell = <<0, 1>>
+
+State 3:
+flashCell = <<1, 0>>
+
+State 4:
+flashCell = <<1, 1>>
+

@@ -10,12 +10,16 @@ VARIABLE flashCell
 
 vars == << flashCell >>
 
-Init == flashCell \in {<<0,0>>, <<0, 1>>, <<1,1>>, <<1,0>>}
+Init == (* Global variables *)
+        /\ flashCell \in {<<0,0>>, <<0, 1>>, <<1,1>>, <<1,0>>}
 
-Next == /\ flashCell = <<0, 0>> => flashCell' = <<0,1>>
-        /\ flashCell = <<0, 1>> => flashCell' = <<1,1>>
-        /\ flashCell = <<1, 0>> => flashCell' = <<0,0>>
-        /\ flashCell = <<1, 1>> => flashCell' = <<1,0>>
+Next == IF flashCell = <<0, 0>>
+           THEN /\ flashCell' = <<0,1>>
+           ELSE /\ IF flashCell = <<0, 1>>
+                      THEN /\ flashCell' = <<1,1>>
+                      ELSE /\ IF flashCell = <<1, 0>>
+                                 THEN /\ flashCell' = <<0,0>>
+                                 ELSE /\ flashCell' = <<1,0>>
 
 Spec == Init /\ [][Next]_vars
 
@@ -39,6 +43,6 @@ OneBitAtATime == (flashCell'[1] + flashCell'[2] - (flashCell[1] + flashCell[2]))
 AlwaysOneBitAtATime == []([OneBitAtATime]_flashCell)
 =============================================================================
 \* Modification History
-\* Last modified Wed Mar 10 22:38:35 MST 2021 by jerem
+\* Last modified Wed Mar 10 22:35:49 MST 2021 by jerem
 \* Last modified Fri Mar 05 10:26:11 MST 2021 by jeremy
 \* Created Tue Mar 02 16:05:58 MST 2021 by jeremy

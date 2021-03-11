@@ -945,31 +945,126 @@
 \fl{}
 \fl{}
 \fl{}
+\fl{ {\p@mmalgorithm} GreyCode {\p@lbrace}}
+\fl{}
+\fl{ {\p@variables}}
+ \fl{ flashCell \.{\in} \{ {\langle} 0 ,\, 0 {\rangle} ,\, {\langle} 0 ,\, 1
+ {\rangle} ,\, {\langle} 1 ,\, 1 {\rangle} ,\, {\langle} 1 ,\, 0 {\rangle} \}
+ {\p@semicolon}}
+ \fl{ actions \.{=} [ before \.{\mapsto} {\langle} {\rangle} ,\, after
+ \.{\mapsto} {\langle} {\rangle} ] {\p@semicolon}}
+\fl{ {\p@lbrace}}
+\fl{}
+\fl{ {\p@while} {\p@lparen} {\TRUE} {\p@rparen} {\p@lbrace}}
+\fl{ actions . before \.{:=} flashCell {\p@semicolon}}
+ \fl{ {\p@if} {\p@lparen}}\al{15}{2}{ flashCell \.{=} {\langle} 0 ,\, 0
+ {\rangle} {\p@rparen} {\p@lbrace}}
+\fl{}
+\fl{ flashCell \.{:=} {\langle} 0 ,\, 1 {\rangle} {\p@semicolon}}
+\fl{ actions . after \.{:=} {\langle} 0 ,\, 1 {\rangle} {\p@semicolon}}
+\fl{}
+ \fl{ {\p@rbrace}}\al{20}{1}{ {\p@else} {\p@if} {\p@lparen} flashCell \.{=}
+ {\langle} 0 ,\, 1 {\rangle} {\p@rparen} {\p@lbrace}}
+\fl{ flashCell \.{:=} {\langle} 1 ,\, 1 {\rangle} {\p@semicolon}}
+\fl{ actions . after \.{:=} {\langle} 1 ,\, 1 {\rangle} {\p@semicolon}}
+\fl{}
+ \fl{ {\p@rbrace}}\al{24}{1}{ {\p@else} {\p@if} {\p@lparen} flashCell \.{=}
+ {\langle} 1 ,\, 0 {\rangle} {\p@rparen} {\p@lbrace}}
+\fl{}
+\fl{ flashCell \.{:=} {\langle} 0 ,\, 0 {\rangle} {\p@semicolon}}
+\fl{ actions . after \.{:=} {\langle} 0 ,\, 0 {\rangle} {\p@semicolon}}
+\fl{}
+\fl{ {\p@rbrace}}\al{29}{1}{ {\p@else} {\p@lbrace}}
+\fl{}
+\fl{ flashCell \.{:=} {\langle} 1 ,\, 0 {\rangle} {\p@semicolon}}
+\fl{ actions . after \.{:=} {\langle} 1 ,\, 0 {\rangle} {\p@semicolon}}
+\fl{}
+\fl{ {\p@rbrace}}
+\fl{}
+\fl{ {\p@rbrace}}
+\fl{ {\p@rbrace}}
+\fl{ {\p@rbrace}%
+\@y{}%
+}
 \fl{}
 \fl{}
-\fl{ {\VARIABLE} flashCell}
 \fl{}
-\fl{ vars}\al{10}{1}{ \.{\defeq}}\al{10}{2}{ {\langle} flashCell {\rangle}}
 \fl{}
- \fl{ Init}\al{12}{1}{ \.{\defeq}}\al{12}{2}{ flashCell \.{\in} \{ {\langle} 0
- ,\, 0 {\rangle} ,\, {\langle} 0 ,\, 1 {\rangle} ,\, {\langle} 1 ,\, 1
- {\rangle} ,\, {\langle} 1 ,\, 0 {\rangle} \}}
 \fl{}
- \fl{ Next}\al{14}{1}{ \.{\defeq}}\al{14}{2}{ \.{\land}}\al{14}{3}{
- flashCell}\al{14}{4}{ \.{=}}\al{14}{5}{ {\langle} 0 ,\, 0
- {\rangle}}\al{14}{10}{ \.{\implies}}\al{14}{11}{ flashCell
- \.{'}}\al{14}{13}{ \.{=}}\al{14}{14}{ {\langle} 0 ,\, 1 {\rangle}}
- \fl{ \.{\land}}\al{15}{1}{ flashCell}\al{15}{2}{ \.{=}}\al{15}{3}{ {\langle}
- 0 ,\, 1 {\rangle}}\al{15}{8}{ \.{\implies}}\al{15}{9}{ flashCell
- \.{'}}\al{15}{11}{ \.{=}}\al{15}{12}{ {\langle} 1 ,\, 1 {\rangle}}
- \fl{ \.{\land}}\al{16}{1}{ flashCell}\al{16}{2}{ \.{=} {\langle} 1 ,\, 0
- {\rangle}}\al{16}{8}{ \.{\implies} flashCell \.{'}}\al{16}{11}{ \.{=}
- {\langle} 0 ,\, 0 {\rangle}}
- \fl{ \.{\land}}\al{17}{1}{ flashCell}\al{17}{2}{ \.{=} {\langle} 1 ,\, 1
- {\rangle}}\al{17}{8}{ \.{\implies} flashCell \.{'}}\al{17}{11}{ \.{=}
+\fl{ {\VARIABLES} flashCell ,\, actions ,\, pc}
+\fl{}
+ \fl{ vars}\al{46}{1}{ \.{\defeq} {\langle} flashCell ,\, actions ,\, pc
+ {\rangle}}
+\fl{}
+\fl{ Init}\al{48}{1}{ \.{\defeq}}\al{48}{2}{%
+\@y{\@s{0}%
+ Global variables
+}%
+}
+ \fl{ \.{\land}}\al{49}{1}{ flashCell \.{\in} \{ {\langle} 0 ,\, 0 {\rangle}
+ ,\, {\langle} 0 ,\, 1 {\rangle} ,\, {\langle} 1 ,\, 1 {\rangle} ,\,
+ {\langle} 1 ,\, 0 {\rangle} \}}
+ \fl{ \.{\land}}\al{50}{1}{ actions \.{=} [ before \.{\mapsto} {\langle}
+ {\rangle} ,\, after \.{\mapsto} {\langle} {\rangle} ]}
+\fl{ \.{\land}}\al{51}{1}{ pc \.{=}\@w{Lbl\_1}}
+\fl{}
+ \fl{ Lbl\_1}\al{53}{1}{ \.{\defeq}}\al{53}{2}{ \.{\land}}\al{53}{3}{ pc
+ \.{=}\@w{Lbl\_1}}
+ \fl{ \.{\land}}\al{54}{1}{ actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
+ before \.{=} flashCell ]}
+ \fl{ \.{\land}}\al{55}{1}{ {\IF}}\al{55}{2}{ flashCell \.{=} {\langle} 0 ,\,
+ 0 {\rangle}}
+ \fl{ \.{\THEN}}\al{56}{1}{ \.{\land}}\al{56}{2}{ flashCell \.{'} \.{=}
+ {\langle} 0 ,\, 1 {\rangle}}
+\fl{ \.{\land}}\al{57}{1}{ pc \.{'} \.{=}\@w{Lbl\_2}}
+ \fl{ \.{\ELSE}}\al{58}{1}{ \.{\land} {\IF}}\al{58}{3}{ flashCell \.{=}
+ {\langle} 0 ,\, 1 {\rangle}}
+ \fl{ \.{\THEN}}\al{59}{1}{ \.{\land}}\al{59}{2}{ flashCell \.{'} \.{=}
+ {\langle} 1 ,\, 1 {\rangle}}
+\fl{ \.{\land}}\al{60}{1}{ pc \.{'} \.{=}\@w{Lbl\_3}}
+ \fl{ \.{\ELSE}}\al{61}{1}{ \.{\land} {\IF}}\al{61}{3}{ flashCell \.{=}
  {\langle} 1 ,\, 0 {\rangle}}
+ \fl{ \.{\THEN}}\al{62}{1}{ \.{\land}}\al{62}{2}{ flashCell \.{'} \.{=}
+ {\langle} 0 ,\, 0 {\rangle}}
+\fl{ \.{\land}}\al{63}{1}{ pc \.{'} \.{=}\@w{Lbl\_4}}
+ \fl{ \.{\ELSE}}\al{64}{1}{ \.{\land}}\al{64}{2}{ flashCell \.{'} \.{=}
+ {\langle} 1 ,\, 0 {\rangle}}
+\fl{ \.{\land}}\al{65}{1}{ pc \.{'} \.{=}\@w{Lbl\_5}}
 \fl{}
-\fl{ Spec}\al{19}{1}{ \.{\defeq} Init \.{\land} {\Box} [ Next ]_{ vars}}
+ \fl{ Lbl\_2}\al{67}{1}{ \.{\defeq}}\al{67}{2}{ \.{\land}}\al{67}{3}{ pc
+ \.{=}\@w{Lbl\_2}}
+ \fl{ \.{\land}}\al{68}{1}{ actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
+ after \.{=} {\langle} 0 ,\, 1 {\rangle} ]}
+\fl{ \.{\land}}\al{69}{1}{ pc \.{'} \.{=}\@w{Lbl\_1}}
+\fl{ \.{\land}}\al{70}{1}{ {\UNCHANGED} flashCell}
+\fl{}
+ \fl{ Lbl\_3}\al{72}{1}{ \.{\defeq}}\al{72}{2}{ \.{\land}}\al{72}{3}{ pc
+ \.{=}\@w{Lbl\_3}}
+ \fl{ \.{\land}}\al{73}{1}{ actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
+ after \.{=} {\langle} 1 ,\, 1 {\rangle} ]}
+\fl{ \.{\land}}\al{74}{1}{ pc \.{'} \.{=}\@w{Lbl\_1}}
+\fl{ \.{\land}}\al{75}{1}{ {\UNCHANGED} flashCell}
+\fl{}
+ \fl{ Lbl\_4}\al{77}{1}{ \.{\defeq}}\al{77}{2}{ \.{\land}}\al{77}{3}{ pc
+ \.{=}\@w{Lbl\_4}}
+ \fl{ \.{\land}}\al{78}{1}{ actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
+ after \.{=} {\langle} 0 ,\, 0 {\rangle} ]}
+\fl{ \.{\land}}\al{79}{1}{ pc \.{'} \.{=}\@w{Lbl\_1}}
+\fl{ \.{\land}}\al{80}{1}{ {\UNCHANGED} flashCell}
+\fl{}
+ \fl{ Lbl\_5}\al{82}{1}{ \.{\defeq}}\al{82}{2}{ \.{\land}}\al{82}{3}{ pc
+ \.{=}\@w{Lbl\_5}}
+ \fl{ \.{\land}}\al{83}{1}{ actions \.{'} \.{=} [ actions {\EXCEPT} {\bang} .
+ after \.{=} {\langle} 1 ,\, 0 {\rangle} ]}
+\fl{ \.{\land}}\al{84}{1}{ pc \.{'} \.{=}\@w{Lbl\_1}}
+\fl{ \.{\land}}\al{85}{1}{ {\UNCHANGED} flashCell}
+\fl{}
+ \fl{ Next}\al{87}{1}{ \.{\defeq}}\al{87}{2}{ Lbl\_1 \.{\lor} Lbl\_2 \.{\lor}
+ Lbl\_3 \.{\lor} Lbl\_4 \.{\lor} Lbl\_5}
+\fl{}
+ \fl{ Spec}\al{89}{1}{ \.{\defeq}}\al{89}{2}{ Init \.{\land} {\Box} [ Next ]_{
+ vars}}
+\fl{}
 \fl{}
 \fl{}
 \fl{}
@@ -984,20 +1079,15 @@
 \fl{}
 \fl{}
 \fl{}
+ \fl{ OneBitAtATime \.{\defeq} {\IF} actions . before \.{\neq} {\langle}
+ {\rangle} \.{\land} actions . after \.{\neq} {\langle} {\rangle}}
+\fl{ \.{\THEN}}
+ \fl{ ( actions . after [ 1 ] \.{+} actions . after [ 2 ] ) \.{-} ( actions .
+ before [ 1 ] \.{+} actions . before [ 2 ] ) \.{\in} \{ \.{-} 1 ,\, 0 ,\, 1
+ \}}
+\fl{ \.{\ELSE} {\TRUE}}
 \fl{}
-\fl{}
-\fl{}
-\fl{}
-\fl{}
-\fl{}
-\fl{}
- \fl{ OneBitAtATime \.{\defeq} ( flashCell \.{'} [ 1 ] \.{+} flashCell \.{'} [
- 2 ] \.{-} ( flashCell [ 1 ] \.{+} flashCell [ 2 ] ) ) \.{\in} \{ \.{-} 1 ,\,
- 0 ,\, 1 \}}
-\fl{}
-\fl{ AlwaysOneBitAtATime \.{\defeq} {\Box} ( [ OneBitAtATime ]_{ flashCell} )}
 \fl{}\bottombar\cl{}
-\fl{}
 \fl{}
 \fl{}
 \fl{}
