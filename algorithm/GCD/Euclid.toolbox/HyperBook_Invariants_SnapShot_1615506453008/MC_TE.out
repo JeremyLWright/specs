@@ -1,0 +1,133 @@
+@!@!@STARTMSG 2262:0 @!@!@
+TLC2 Version 2.15 of Day Month 20?? (rev: be76942)
+@!@!@ENDMSG 2262 @!@!@
+@!@!@STARTMSG 2187:0 @!@!@
+Running breadth-first search Model-Checking with fp 2 and seed -3203608768378575156 with 2 workers on 4 cores with 1204MB heap and 2705MB offheap memory [pid: 3908] (Windows 10 10.0 amd64, AdoptOpenJDK 14.0.1 x86_64, OffHeapDiskFPSet, DiskStateQueue).
+@!@!@ENDMSG 2187 @!@!@
+@!@!@STARTMSG 2220:0 @!@!@
+Starting SANY...
+@!@!@ENDMSG 2220 @!@!@
+Parsing file C:\Users\jerem\source\repos\specs\algorithm\GCD\Euclid.toolbox\HyperBook_Invariants\MC.tla
+Parsing file C:\Users\jerem\source\repos\specs\algorithm\GCD\Euclid.toolbox\HyperBook_Invariants\Euclid.tla
+Labels added.
+Parsing file C:\TLAToolbox\toolbox\plugins\org.lamport.tlatools_1.0.0.202103091938\tla2sany\StandardModules\TLC.tla
+Parsing file C:\TLAToolbox\toolbox\plugins\org.lamport.tlatools_1.0.0.202103091938\tla2sany\StandardModules\Integers.tla
+Parsing file C:\Users\jerem\source\repos\specs\algorithm\GCD\Euclid.toolbox\HyperBook_Invariants\GCD.tla
+Parsing file C:\TLAToolbox\toolbox\plugins\org.lamport.tlatools_1.0.0.202103091938\tla2sany\StandardModules\Naturals.tla
+Parsing file C:\TLAToolbox\toolbox\plugins\org.lamport.tlatools_1.0.0.202103091938\tla2sany\StandardModules\Sequences.tla
+Parsing file C:\TLAToolbox\toolbox\plugins\org.lamport.tlatools_1.0.0.202103091938\tla2sany\StandardModules\FiniteSets.tla
+Semantic processing of module Naturals
+Semantic processing of module Integers
+Semantic processing of module GCD
+Semantic processing of module Euclid
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module TLC
+Semantic processing of module MC
+@!@!@STARTMSG 2219:0 @!@!@
+SANY finished.
+@!@!@ENDMSG 2219 @!@!@
+@!@!@STARTMSG 2185:0 @!@!@
+Starting... (2021-03-11 16:47:31)
+@!@!@ENDMSG 2185 @!@!@
+@!@!@STARTMSG 2189:0 @!@!@
+Computing initial states...
+@!@!@ENDMSG 2189 @!@!@
+@!@!@STARTMSG 2190:0 @!@!@
+Finished computing initial states: 1 distinct state generated at 2021-03-11 16:47:32.
+@!@!@ENDMSG 2190 @!@!@
+@!@!@STARTMSG 2266:1 @!@!@
+The first argument of < should be an integer, but instead it is:
+1..30
+@!@!@ENDMSG 2266 @!@!@
+@!@!@STARTMSG 2121:1 @!@!@
+The behavior up to this point is:
+@!@!@ENDMSG 2121 @!@!@
+@!@!@STARTMSG 2217:4 @!@!@
+1: <Initial predicate>
+/\ x = 1..30
+/\ y = 1..18
+/\ pc = "Lbl_1"
+
+@!@!@ENDMSG 2217 @!@!@
+@!@!@STARTMSG 2103:1 @!@!@
+The error occurred when TLC was evaluating the nested
+expressions at the following positions:
+0. Line 32, column 10 to line 41, column 43 in Euclid
+1. Line 32, column 13 to line 32, column 24 in Euclid
+2. Line 33, column 13 to line 41, column 43 in Euclid
+3. Line 34, column 21 to line 39, column 36 in Euclid
+4. Line 34, column 24 to line 38, column 40 in Euclid
+5. Line 34, column 27 to line 34, column 31 in Euclid
+
+
+@!@!@ENDMSG 2103 @!@!@
+@!@!@STARTMSG 2201:0 @!@!@
+The coverage statistics at 2021-03-11 16:47:32
+@!@!@ENDMSG 2201 @!@!@
+@!@!@STARTMSG 2773:0 @!@!@
+<Init line 27, col 1 to line 27, col 4 of module Euclid>: 1:1
+@!@!@ENDMSG 2773 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 28, col 9 to line 30, col 23 of module Euclid: 1
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<Lbl_1 line 32, col 1 to line 32, col 5 of module Euclid>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 32, col 13 to line 32, col 24 of module Euclid: 2
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 33, col 16 to line 33, col 21 of module Euclid: 2
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 34, col 27 to line 34, col 31 of module Euclid: 2
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 35, col 35 to line 35, col 44 of module Euclid: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 36, col 35 to line 36, col 40 of module Euclid: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 37, col 35 to line 37, col 44 of module Euclid: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 38, col 35 to line 38, col 40 of module Euclid: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 39, col 24 to line 39, col 36 of module Euclid: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 40, col 24 to line 40, col 35 of module Euclid: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 41, col 24 to line 41, col 43 of module Euclid: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2772:0 @!@!@
+<Terminating line 44, col 1 to line 44, col 11 of module Euclid>: 0:0
+@!@!@ENDMSG 2772 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 44, col 31 to line 44, col 44 of module Euclid: 0
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2774:0 @!@!@
+<PartialCorrectness line 55, col 1 to line 55, col 18 of module Euclid>
+@!@!@ENDMSG 2774 @!@!@
+@!@!@STARTMSG 2221:0 @!@!@
+  line 55, col 23 to line 55, col 63 of module Euclid: 1
+@!@!@ENDMSG 2221 @!@!@
+@!@!@STARTMSG 2202:0 @!@!@
+End of statistics.
+@!@!@ENDMSG 2202 @!@!@
+@!@!@STARTMSG 2200:0 @!@!@
+Progress(1) at 2021-03-11 16:47:32: 1 states generated (20 s/min), 1 distinct states found (20 ds/min), 0 states left on queue.
+@!@!@ENDMSG 2200 @!@!@
+@!@!@STARTMSG 2199:0 @!@!@
+1 states generated, 1 distinct states found, 0 states left on queue.
+@!@!@ENDMSG 2199 @!@!@
+@!@!@STARTMSG 2194:0 @!@!@
+The depth of the complete state graph search is 1.
+@!@!@ENDMSG 2194 @!@!@
+@!@!@STARTMSG 2186:0 @!@!@
+Finished in 2946ms at (2021-03-11 16:47:32)
+@!@!@ENDMSG 2186 @!@!@

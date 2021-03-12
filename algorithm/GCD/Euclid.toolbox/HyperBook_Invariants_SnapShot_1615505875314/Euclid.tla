@@ -1,6 +1,6 @@
 ------------------------------- MODULE Euclid -------------------------------
 
-EXTENDS Integers, GCD, TLC
+EXTENDS Integers, GCD
 
 CONSTANTS M,N
 
@@ -8,27 +8,25 @@ ASSUME /\ M \in Nat \ {0}
        /\ N \in Nat \ {0}
        
 (****************************************************
---fair algorithm Euclid {
+--algorithm Euclid {
 
-variables x \in 1..N, y \in 1..N, x0 = x, y0=y;
+variables x = M, y = N;
 { 
   while(x /= y) {
     if (x < y) { y := y - x}
     else {x := x - y}
-  }; assert (x = y) /\ x = GCD(x0, y0)
+  }
 }
 }
 *****************************************************)
-\* BEGIN TRANSLATION (chksum(pcal) = "e44a3caf" /\ chksum(tla) = "fa860b26")
-VARIABLES x, y, x0, y0, pc
+\* BEGIN TRANSLATION (chksum(pcal) = "c4b361a" /\ chksum(tla) = "e633fe73")
+VARIABLES x, y, pc
 
-vars == << x, y, x0, y0, pc >>
+vars == << x, y, pc >>
 
 Init == (* Global variables *)
-        /\ x \in 1..N
-        /\ y \in 1..N
-        /\ x0 = x
-        /\ y0 = y
+        /\ x = M
+        /\ y = N
         /\ pc = "Lbl_1"
 
 Lbl_1 == /\ pc = "Lbl_1"
@@ -39,11 +37,8 @@ Lbl_1 == /\ pc = "Lbl_1"
                           ELSE /\ x' = x - y
                                /\ y' = y
                     /\ pc' = "Lbl_1"
-               ELSE /\ Assert((x = y) /\ x = GCD(x0, y0), 
-                              "Failure of assertion at line 18, column 6.")
-                    /\ pc' = "Done"
+               ELSE /\ pc' = "Done"
                     /\ UNCHANGED << x, y >>
-         /\ UNCHANGED << x0, y0 >>
 
 (* Allow infinite stuttering to prevent deadlock on termination. *)
 Terminating == pc = "Done" /\ UNCHANGED vars
@@ -51,15 +46,12 @@ Terminating == pc = "Done" /\ UNCHANGED vars
 Next == Lbl_1
            \/ Terminating
 
-Spec == /\ Init /\ [][Next]_vars
-        /\ WF_vars(Next)
+Spec == Init /\ [][Next]_vars
 
 Termination == <>(pc = "Done")
 
 \* END TRANSLATION 
-
-PartialCorrectness == (pc = "Done") => (x = y) /\ x = GCD(x0, y0)
 =============================================================================
 \* Modification History
-\* Last modified Thu Mar 11 17:00:31 MST 2021 by jerem
+\* Last modified Wed Mar 10 23:15:51 MST 2021 by jerem
 \* Created Wed Mar 10 23:08:35 MST 2021 by jerem

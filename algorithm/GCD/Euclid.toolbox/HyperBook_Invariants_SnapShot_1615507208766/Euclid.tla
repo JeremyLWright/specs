@@ -19,7 +19,7 @@ variables x \in 1..N, y \in 1..N, x0 = x, y0=y;
 }
 }
 *****************************************************)
-\* BEGIN TRANSLATION (chksum(pcal) = "e44a3caf" /\ chksum(tla) = "fa860b26")
+\* BEGIN TRANSLATION (chksum(pcal) = "e44a3caf" /\ chksum(tla) = "f8d6661d")
 VARIABLES x, y, x0, y0, pc
 
 vars == << x, y, x0, y0, pc >>
@@ -51,8 +51,7 @@ Terminating == pc = "Done" /\ UNCHANGED vars
 Next == Lbl_1
            \/ Terminating
 
-Spec == /\ Init /\ [][Next]_vars
-        /\ WF_vars(Next)
+Spec == Init /\ [][Next]_vars
 
 Termination == <>(pc = "Done")
 
@@ -61,5 +60,5 @@ Termination == <>(pc = "Done")
 PartialCorrectness == (pc = "Done") => (x = y) /\ x = GCD(x0, y0)
 =============================================================================
 \* Modification History
-\* Last modified Thu Mar 11 17:00:31 MST 2021 by jerem
+\* Last modified Thu Mar 11 16:59:54 MST 2021 by jerem
 \* Created Wed Mar 10 23:08:35 MST 2021 by jerem
