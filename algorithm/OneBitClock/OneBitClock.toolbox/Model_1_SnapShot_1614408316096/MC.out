@@ -1,7 +1,0 @@
-@!@!@STARTMSG 2262:0 @!@!@
-TLC2 Version 2.16 of 31 December 2020 (rev: cdddf55)
-@!@!@ENDMSG 2262 @!@!@
-@!@!@STARTMSG 1102:1 @!@!@
-Error: unrecognized option: -dumpdot
-Usage: java tlc2.TLC [-option] inputfile
-@!@!@ENDMSG 1102 @!@!@

@@ -4,13 +4,12 @@
 
 variable b \in {0, 1};
 {
-
-while (TRUE) { 
-    if (b = 0) 
-        b := 1 
-    else 
-        b := 0 
-}
+    while (TRUE) { 
+        if (b = 0) 
+            b := 1 
+        else 
+            b := 0 
+    }
 }
 }
 end algorithm;

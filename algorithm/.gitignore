@@ -1,0 +1,8 @@
+*.dot
+*.old
+*.dvi
+*.pdf
+*.tex
+*.fp
+*.st
+*.out
