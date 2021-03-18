@@ -1,5 +1,11 @@
 package crdt
 
+import (
+	"fmt"
+
+	"github.com/JeremyLWright/specs/crdt/broker"
+)
+
 type Key string
 type Value string
 type Timestamp int
@@ -26,32 +32,45 @@ type broadcastRequest struct {
 type mapCRDT struct {
 	values     map[Key][]tValue
 	timestamps chan Timestamp
-	broadcasts chan broadcastRequest
+	publisher  *broker.Broker
+	clientId   int
 }
 
-func NewMapCRDT(lamportClock chan Timestamp, network chan broadcastRequest) *mapCRDT {
-	return &mapCRDT{
+func NewMapCRDT(lamportClock chan Timestamp, b *broker.Broker) (*mapCRDT, func()) {
+	m := &mapCRDT{
+		values:     make(map[Key][]tValue),
 		timestamps: lamportClock,
-		broadcasts: network,
+		publisher:  b,
+		clientId:   int(<-lamportClock),
 	}
+	return m, func() {
+		m.broadcastListen(m.publisher.Subscribe())
+	}
+
 }
 
-func (self *mapCRDT) broadcastListen(conn chan broadcastRequest) {
+func (self *mapCRDT) broadcastListen(conn chan interface{}) {
 	for {
-		m := <-conn
+		msg := <-conn
+		fmt.Printf("Client %d got message: %v\n", self.clientId, msg)
 
-		switch m.action {
-		case Set:
-			self.deliveringSetByCausalBroadcast(m.t, m.k, m.v)
-		case Delete:
-			self.deliveringDeleteByCausalBroadcast(m.t, m.k)
+		switch m := msg.(type) {
+		case broadcastRequest:
+			switch m.action {
+			case Set:
+				self.deliveringSetByCausalBroadcast(m.t, m.k, m.v)
+			case Delete:
+				self.deliveringDeleteByCausalBroadcast(m.t, m.k)
+			}
+		default:
+			fmt.Printf("Client %d got unknown message: %v\n", self.clientId, msg)
 		}
 	}
 }
 
 func (self *mapCRDT) broadcast(verb Verb, t Timestamp, k Key, v Value) {
 	request := broadcastRequest{verb, t, k, v}
-	self.broadcasts <- request
+	self.publisher.Publish(request)
 }
 
 func (self *mapCRDT) RequestToReadValue(k Key) (Value, bool) {
@@ -81,15 +100,19 @@ func (self *mapCRDT) deliveringSetByCausalBroadcast(t Timestamp, k Key, v Value)
 	previous, ok := self.values[k]
 
 	if ok || forAllEntryYoungerThan(t, previous) {
-		self.values[k] = []tValue{tValue{t, v}}
+		self.values[k] = []tValue{{t, v}}
 	}
 }
 
 func (self *mapCRDT) RequestToDeleteKey(k Key) {
-	e, ok := self.values[k]
-	if ok {
-		for _, entries := range e {
-			self.deliveringDeleteByCausalBroadcast(entries.t, k)
+	entries, ok := self.values[k]
+	if ok { //This line is suspicious.
+		//I may have misunderstood the specification.
+		//Only delete if you have that key.
+		//It's possible the key is still propagating.
+		//In which case, we won't forward the delete.
+		for _, e := range entries {
+			self.broadcast(Delete, e.t, k, "")
 		}
 	}
 }
