@@ -1,4 +1,4 @@
-------------------------------- MODULE Euclid -------------------------------
+------------------------------- MODULE EuclidProof -------------------------------
 
 EXTENDS Integers, GCD, TLC
 
@@ -9,25 +9,24 @@ ASSUME /\ M \in Nat \ {0}
        
 (* --fair algorithm Euclid {
 
-variables x \in 1..N, y \in 1..N, x0 = x, y0=y;
+variables x = M, y = N;
 { 
   while(x /= y) {
     if (x < y) { y := y - x}
     else {x := x - y}
-  }; assert (x = y) /\ x = GCD(x0, y0)
+  }; assert (x = y) /\ x = GCD(M, N)
 }
 }
-*****************************************************)
-\* BEGIN TRANSLATION (chksum(pcal) = "e44a3caf" /\ chksum(tla) = "36f9a577")
-VARIABLES x, y, x0, y0, pc
 
-vars == << x, y, x0, y0, pc >>
+*)
+\* BEGIN TRANSLATION (chksum(pcal) = "71e50359" /\ chksum(tla) = "17cbc59b")
+VARIABLES x, y, pc
+
+vars == << x, y, pc >>
 
 Init == (* Global variables *)
-        /\ x \in 1..N
-        /\ y \in 1..N
-        /\ x0 = x
-        /\ y0 = y
+        /\ x = M
+        /\ y = N
         /\ pc = "Lbl_1"
 
 Lbl_1 == /\ pc = "Lbl_1"
@@ -38,11 +37,10 @@ Lbl_1 == /\ pc = "Lbl_1"
                           ELSE /\ x' = x - y
                                /\ y' = y
                     /\ pc' = "Lbl_1"
-               ELSE /\ Assert((x = y) /\ x = GCD(x0, y0), 
+               ELSE /\ Assert((x = y) /\ x = GCD(M, N), 
                               "Failure of assertion at line 17, column 6.")
                     /\ pc' = "Done"
                     /\ UNCHANGED << x, y >>
-         /\ UNCHANGED << x0, y0 >>
 
 (* Allow infinite stuttering to prevent deadlock on termination. *)
 Terminating == pc = "Done" /\ UNCHANGED vars
@@ -57,7 +55,7 @@ Termination == <>(pc = "Done")
 
 \* END TRANSLATION 
 
-PartialCorrectness == (pc = "Done") => (x = y) /\ x = GCD(x0, y0)
+PartialCorrectness == (pc = "Done") => (x = y) /\ x = GCD(M, N)
 =============================================================================
 \* Modification History
 \* Last modified Thu Mar 11 17:00:31 MST 2021 by jerem
