@@ -56,6 +56,18 @@ Termination == <>(pc = "Done")
 \* END TRANSLATION 
 
 PartialCorrectness == (pc = "Done") => (x = y) /\ x = GCD(M, N)
+
+TypeOK == /\ x \in Nat \ {0}
+          /\ y \in Nat \ {0}
+
+Inv == /\ TypeOK
+       /\ GCD(x,y) = GCD(M,N)
+       /\ (pc = "Done") => (x = y)
+
+THEOREM GCD1 == \A m, n \in Nat \ {0} : GCD(m, m) = m
+THEOREM GCD2 == \A m, n \in Nat \ {0} : GCD(m, n) = GCD(n, m)
+THEOREM GCD3 == \A m, n \in Nat \ {0} : (n > m) => (GCD(m, n) = GCD(m, n-m))
+
 =============================================================================
 \* Modification History
 \* Last modified Thu Mar 11 17:00:31 MST 2021 by jerem
