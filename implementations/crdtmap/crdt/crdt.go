@@ -15,11 +15,11 @@ type tValue struct {
 	v Value
 }
 
-type Verb int
+type Verb string
 
 const (
-	Set Verb = iota
-	Delete
+	Set    Verb = "Set"
+	Delete Verb = "Delete"
 )
 
 type broadcastRequest struct {
@@ -33,15 +33,15 @@ type mapCRDT struct {
 	values     map[Key][]tValue
 	timestamps chan Timestamp
 	publisher  *broker.Broker
-	clientId   int
+	clientId   string
 }
 
-func NewMapCRDT(lamportClock chan Timestamp, b *broker.Broker) (*mapCRDT, func()) {
+func NewMapCRDT(name string, lamportClock chan Timestamp, b *broker.Broker) (*mapCRDT, func()) {
 	m := &mapCRDT{
 		values:     make(map[Key][]tValue),
 		timestamps: lamportClock,
 		publisher:  b,
-		clientId:   int(<-lamportClock),
+		clientId:   name,
 	}
 	return m, func() {
 		m.broadcastListen(m.publisher.Subscribe())
@@ -52,7 +52,7 @@ func NewMapCRDT(lamportClock chan Timestamp, b *broker.Broker) (*mapCRDT, func()
 func (self *mapCRDT) broadcastListen(conn chan interface{}) {
 	for {
 		msg := <-conn
-		fmt.Printf("Client %d got message: %v\n", self.clientId, msg)
+		fmt.Printf("[%s]: %v\n", self.clientId, msg)
 
 		switch m := msg.(type) {
 		case broadcastRequest:
@@ -63,7 +63,7 @@ func (self *mapCRDT) broadcastListen(conn chan interface{}) {
 				self.deliveringDeleteByCausalBroadcast(m.t, m.k)
 			}
 		default:
-			fmt.Printf("Client %d got unknown message: %v\n", self.clientId, msg)
+			fmt.Printf("Client %s got unknown message: %v\n", self.clientId, msg)
 		}
 	}
 }
@@ -73,25 +73,27 @@ func (self *mapCRDT) broadcast(verb Verb, t Timestamp, k Key, v Value) {
 	self.publisher.Publish(request)
 }
 
-func (self *mapCRDT) RequestToReadValue(k Key) (Value, bool) {
-	entries := self.values[k]
-	if len(entries) > 0 {
-		return entries[len(entries)-1].v, true
+func (self *mapCRDT) RequestToReadValue(k Key) (Value, Timestamp, bool) {
+	entries, ok := self.values[k]
+	if ok {
+		return entries[len(entries)-1].v, entries[len(entries)-1].t, ok
 	}
-	return "", false
+	return "", -1, ok
 }
 
-func (self *mapCRDT) RequestToSetKey(k Key, v Value) {
+func (self *mapCRDT) RequestToSetKey(k Key, v Value) Timestamp {
 	t := <-self.timestamps
 	self.broadcast(Set, t, k, v)
+	return t
 }
 
-func forAllEntryYoungerThan(t Timestamp, previous []tValue) bool {
-	for _, prime := range previous {
-		if prime.t < t {
-			continue
+//isNewerThanAll implements the last write wins semantics. If the current timestamp is
+//greater than all current values, permit the write.
+func isNewerThanAll(t Timestamp, values []tValue) bool {
+	for _, v := range values {
+		if v.t > t {
+			return false
 		}
-		return false
 	}
 	return true
 }
@@ -99,22 +101,13 @@ func forAllEntryYoungerThan(t Timestamp, previous []tValue) bool {
 func (self *mapCRDT) deliveringSetByCausalBroadcast(t Timestamp, k Key, v Value) {
 	previous, ok := self.values[k]
 
-	if ok || forAllEntryYoungerThan(t, previous) {
+	if !ok || isNewerThanAll(t, previous) {
 		self.values[k] = []tValue{{t, v}}
 	}
 }
 
-func (self *mapCRDT) RequestToDeleteKey(k Key) {
-	entries, ok := self.values[k]
-	if ok { //This line is suspicious.
-		//I may have misunderstood the specification.
-		//Only delete if you have that key.
-		//It's possible the key is still propagating.
-		//In which case, we won't forward the delete.
-		for _, e := range entries {
-			self.broadcast(Delete, e.t, k, "")
-		}
-	}
+func (self *mapCRDT) RequestToDeleteKey(t Timestamp, k Key) {
+	self.broadcast(Delete, t, k, "")
 }
 
 func (self *mapCRDT) findIdxByTimestamp(t Timestamp, k Key) int {
@@ -136,6 +129,11 @@ func removeIndex(s []tValue, index int) []tValue {
 func (self *mapCRDT) deliveringDeleteByCausalBroadcast(t Timestamp, k Key) {
 	idx := self.findIdxByTimestamp(t, k)
 	if idx != -1 {
-		self.values[k] = removeIndex(self.values[k], idx)
+		newValues := removeIndex(self.values[k], idx)
+		if len(newValues) > 0 {
+			self.values[k] = newValues
+		} else {
+			delete(self.values, k)
+		}
 	}
 }

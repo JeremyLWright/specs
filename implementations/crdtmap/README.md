@@ -8,6 +8,13 @@ This is a go implementation of a broken CRDT algorithm instigated by [Martin Kle
 $ go run main.go
 ```
 
+# Tests
+```
+$ go test -count 1000
+```
+
+
+
 # Example
 
 <img src="screenshots/execution-broken.png" width="50%">
