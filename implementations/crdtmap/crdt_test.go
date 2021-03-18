@@ -46,3 +46,32 @@ func TestEventuallyConsistent(t *testing.T) {
 	assert.False(t, ok2, "Bob incorrectly had the value.")
 
 }
+
+func TestBigSet(t *testing.T) {
+
+	// Create and start a broker:
+	b := broker.NewBroker()
+	go b.Start()
+
+	//Start the clock source
+	clock = make(chan crdt.Timestamp)
+	go testClock(1, clock)
+
+	alice, m1Listen := crdt.NewMapCRDT("alice", clock, b)
+	bob, m2Listen := crdt.NewMapCRDT("bob", clock, b)
+
+	go m1Listen()
+	go m2Listen()
+
+	for i := 0; i < 100; i++ {
+		v := crdt.Value(fmt.Sprintf("v%d", i))
+		alice.RequestToSetKey("George", v)
+		bob.RequestToSetKey("George", v)
+	}
+
+	_, ts, ok := bob.RequestToReadValue("George")
+	assert.True(t, ok)
+	bob.RequestToDeleteKey(ts, "George")
+	_, ts, ok = bob.RequestToReadValue("George")
+	assert.False(t, ok)
+}

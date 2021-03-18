@@ -2,6 +2,7 @@ package crdt
 
 import (
 	"fmt"
+	"sync"
 
 	"github.com/JeremyLWright/specs/crdt/broker"
 )
@@ -31,9 +32,14 @@ type broadcastRequest struct {
 
 type mapCRDT struct {
 	values     map[Key][]tValue
+	lock       sync.RWMutex
 	timestamps chan Timestamp
 	publisher  *broker.Broker
 	clientId   string
+}
+
+func (self *mapCRDT) DumpState() {
+	fmt.Printf("[%s]: %+v\n", self.clientId, self.values)
 }
 
 func NewMapCRDT(name string, lamportClock chan Timestamp, b *broker.Broker) (*mapCRDT, func()) {
@@ -74,6 +80,8 @@ func (self *mapCRDT) broadcast(verb Verb, t Timestamp, k Key, v Value) {
 }
 
 func (self *mapCRDT) RequestToReadValue(k Key) (Value, Timestamp, bool) {
+	self.lock.RLock()
+	defer self.lock.RUnlock()
 	entries, ok := self.values[k]
 	if ok {
 		return entries[len(entries)-1].v, entries[len(entries)-1].t, ok
@@ -83,6 +91,7 @@ func (self *mapCRDT) RequestToReadValue(k Key) (Value, Timestamp, bool) {
 
 func (self *mapCRDT) RequestToSetKey(k Key, v Value) Timestamp {
 	t := <-self.timestamps
+	self.deliveringSetByCausalBroadcast(t, k, v) //self set first
 	self.broadcast(Set, t, k, v)
 	return t
 }
@@ -99,6 +108,8 @@ func isNewerThanAll(t Timestamp, values []tValue) bool {
 }
 
 func (self *mapCRDT) deliveringSetByCausalBroadcast(t Timestamp, k Key, v Value) {
+	self.lock.Lock()
+	defer self.lock.Unlock()
 	previous, ok := self.values[k]
 
 	if !ok || isNewerThanAll(t, previous) {
@@ -107,6 +118,7 @@ func (self *mapCRDT) deliveringSetByCausalBroadcast(t Timestamp, k Key, v Value)
 }
 
 func (self *mapCRDT) RequestToDeleteKey(t Timestamp, k Key) {
+	self.deliveringDeleteByCausalBroadcast(t, k) //self delete
 	self.broadcast(Delete, t, k, "")
 }
 
@@ -127,6 +139,8 @@ func removeIndex(s []tValue, index int) []tValue {
 }
 
 func (self *mapCRDT) deliveringDeleteByCausalBroadcast(t Timestamp, k Key) {
+	self.lock.Lock()
+	defer self.lock.Unlock()
 	idx := self.findIdxByTimestamp(t, k)
 	if idx != -1 {
 		newValues := removeIndex(self.values[k], idx)
