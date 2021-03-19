@@ -1,7 +1,7 @@
 -------------------------- MODULE GreyCodeCounter --------------------------
 EXTENDS Sequences, Integers, TLC
 
-(* Grey Code is a way of encoding binary information such that no two bits flip in one step. 
+(* Grey Code is a way of encoding binary information such that no two bits flip in one step.
  This is used in Flash Memory to minimize bit flips during self-discharge *)
 
 
@@ -12,10 +12,10 @@ vars == << flashCell >>
 
 Init == flashCell \in {<<0,0>>, <<0, 1>>, <<1,1>>, <<1,0>>}
 
-Next == /\ flashCell = <<0, 0>> => flashCell' = <<0,1>>
-        /\ flashCell = <<0, 1>> => flashCell' = <<1,1>>
-        /\ flashCell = <<1, 0>> => flashCell' = <<0,0>>
-        /\ flashCell = <<1, 1>> => flashCell' = <<1,0>>
+Next == \/ flashCell = <<0, 0>> /\ flashCell' = <<0,1>>
+        \/ flashCell = <<0, 1>> /\ flashCell' = <<1,1>>
+        \/ flashCell = <<1, 0>> /\ flashCell' = <<0,0>>
+        \/ flashCell = <<1, 1>> /\ flashCell' = <<1,0>>
 
 Spec == Init /\ [][Next]_vars
 
@@ -27,9 +27,9 @@ TypeOk == flashCell[1] \in {0, 1} /\ flashCell[2] \in {0,1} \* They are 1 indexe
 Only 1 bit can change between two states. <<0,0>> -> <<1,1>> is an illegal transition.
 Hence, "distance" between any two states is | {0, 1} |
 
-OneBitAtATime == IF actions.before /= <<>> /\ actions.after /= <<>> 
+OneBitAtATime == IF actions.before /= <<>> /\ actions.after /= <<>>
     THEN
-         (actions.after[1] + actions.after[2]) - (actions.before[1] + actions.before[2])  \in {-1, 0, 1} 
+         (actions.after[1] + actions.after[2]) - (actions.before[1] + actions.before[2])  \in {-1, 0, 1}
     ELSE TRUE
 *)
 
