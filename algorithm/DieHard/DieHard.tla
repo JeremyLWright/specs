@@ -52,12 +52,6 @@ Next == \/ FillSmallJug
         
 DefuseBomb == bigJug /= 4 \* Look for a violation which is the solution....
 
-          
-          
-          
-          
-        
-
 =============================================================================
 \* Modification History
 \* Last modified Thu Mar 04 09:33:26 MST 2021 by jeremy
