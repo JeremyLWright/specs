@@ -2,18 +2,38 @@
 
 EXTENDS TLC 
 
-VARIABLES board
+VARIABLES board, currentPlayer
 
-Init == board = << <<"-", "-", "-">>,
+Init == /\ board = << 
+            <<"-", "-", "-">>,
             <<"-", "-", "-">>,
             <<"-", "-", "-">> >>
+        /\ currentPlayer = "X"
+
+WinningPositions == 
+    {
+        \* Row Wins
+        {<<1, 1>>, <<1, 2>>, <<1, 3>>},
+        {<<2, 1>>, <<2, 2>>, <<2, 3>>},
+        {<<3, 1>>, <<3, 2>>, <<3, 3>>},
+
+        \* Column Wins
+        {<<1, 1>>, <<2, 2>>, <<3, 2>>},
+        {<<1, 2>>, <<2, 2>>, <<3, 2>>},
+        {<<1, 2>>, <<2, 2>>, <<3, 2>>},
+
+        \* Diagonal Wins
+        {<<1, 1>>, <<2, 2>>, <<3, 3>>},
+        {<<1, 3>>, <<2, 2>>, <<3, 1>>}
+    }
+        
 
 
 Marks == {"X", "O", "-"}
 
 CellIsOpen(idx) == board[idx[1]][idx[2]] = "-"
 
-Range(f) == { f[x] : x \in DOMAIN f}
+Range(f) == { f[x] : x \in DOMAIN f }
 
 OpenCellsInRow(row) == {cell \in DOMAIN row : CellIsOpen(cell)}
 
@@ -22,38 +42,55 @@ AllCells == (DOMAIN board) \X (DOMAIN board[1])
 \* OpenCells :: [(Int, Int)]
 OpenCells == {idx \in AllCells : CellIsOpen(idx)}
 
-\*LET cells == {}
-\* OpenCells == {<<row, cell>> : row \in DOMAIN board : OpenCells(board[row])}
-
 PlayerXGoes == 
-   /\ CHOOSE cell \in OpenCells : board'[cell[1]][cell[2] = "X" 
+    \E <<row, col>> \in OpenCells : 
+               board' = [ board EXCEPT ![row][col] = "X" ]
+
+PlayerOGoes == 
+    \E <<row, col>> \in OpenCells : 
+               board' = [ board EXCEPT ![row][col] = "O" ]
    
 
-AllRowsHaveThree == TRUE
-    \*/\ Len(<<x>> : x \in (DOMAIN board[1])) = 3
+\* AllRowsHaveThree == TRUE
+\*     \* /\ Len(<<x>> : x \in (DOMAIN board[1])) = 3
 
 OpenCellsAreOpen ==
-    /\ \A idx \in OpenCells : board[idx[1]][idx[2]] = "-" \* Is this right? 
+    /\ \A <<row, col>> \in OpenCells : board[row][col] = "-" 
+
+Xs ==
+    /\ \A <<row, col>> \in AllCells : board[row][col] = "X" 
+
+Os ==
+    /\ \A <<row, col>> \in AllCells : board[row][col] = "O" 
 
 CellsHaveValidMarks == 
-    \* This doesn't work because tuples are "non enumerable"???
-    \* /\ \A cell \in board[1] : cell \in Marks 
-    \* /\ \A cell \in board[2] : cell \in Marks
-    \* /\ \A cell \in board[3] : cell \in Marks
-    \* This doesn't work because tuples are "non enumerable"???
-    \* /\ CHOOSE x \in board[1] : x \in Marks
-    \* /\ CHOOSE x \in board[2] : x \in Marks
-    \* /\ CHOOSE x \in board[3] : x \in Marks
-    /\ \A row \in DOMAIN board : \A cell \in DOMAIN board[row] : board[row][cell] \in Marks
-
+    /\ \A row \in DOMAIN board : \A col \in DOMAIN board[row] : board[row][col] \in Marks
 
 TypeOk == 
-    /\ AllRowsHaveThree
     /\ CellsHaveValidMarks
     /\ OpenCellsAreOpen
 
-Next ==
-    board' = board
-    \* /\ PlayerXGoes
+switchPlayer == IF currentPlayer = "X" THEN currentPlayer' = "O" ELSE currentPlayer' = "X"
 
+Next ==
+    \/ 
+        /\ currentPlayer = "X" \* Enabling condition
+        /\ PlayerXGoes
+        /\ switchPlayer
+    \/ 
+        /\ currentPlayer = "O"
+        /\ PlayerOGoes
+        /\ switchPlayer
+    \/
+
+\* A win is defined as 1 player getting verticle row, horizontal row, or cross
+XWins == Xs \in WinningPositions
+OWins == Xs \in WinningPositions
+\* How can I get a REPL?
+
+
+
+\* TODO
+\* 1. Define what win, or finished/full means
+\* 2. A game finished. 
 ====
