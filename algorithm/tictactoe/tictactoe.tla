@@ -1,8 +1,10 @@
 ---- MODULE tictactoe ----
 
-EXTENDS TLC 
+EXTENDS TLC, Sequences, FiniteSets, Integers
 
 VARIABLES board, currentPlayer
+
+vars == <<board, currentPlayer>>
 
 Init == /\ board = << 
             <<"-", "-", "-">>,
@@ -27,20 +29,31 @@ WinningPositions ==
         {<<1, 3>>, <<2, 2>>, <<3, 1>>}
     }
         
+AllCells == (DOMAIN board) \X (DOMAIN board[1])
 
+CellIsOpen(idx) == board[idx[1]][idx[2]] = "-"
+
+OpenCells == {idx \in AllCells : CellIsOpen(idx)}
+
+Draw == "No Winner. It's a Draw."
 
 Marks == {"X", "O", "-"}
 
-CellIsOpen(idx) == board[idx[1]][idx[2]] = "-"
 
 Range(f) == { f[x] : x \in DOMAIN f }
 
 OpenCellsInRow(row) == {cell \in DOMAIN row : CellIsOpen(cell)}
 
-AllCells == (DOMAIN board) \X (DOMAIN board[1])
 
+\* Wrong version of Positions
+\* Positions(player) ==
+\*    /\ \A <<row, col>> \in AllCells : board[row][col] = player 
+
+Positions(player) == {<<row, col>> \in AllCells : board[row][col] = player} 
+    
+
+PlayerWon(player) == \E wp \in WinningPositions : wp \subseteq Positions(player)
 \* OpenCells :: [(Int, Int)]
-OpenCells == {idx \in AllCells : CellIsOpen(idx)}
 
 PlayerXGoes == 
     \E <<row, col>> \in OpenCells : 
@@ -50,21 +63,19 @@ PlayerOGoes ==
     \E <<row, col>> \in OpenCells : 
                board' = [ board EXCEPT ![row][col] = "O" ]
    
+Winner == IF PlayerWon("X") THEN "X"
+          ELSE IF PlayerWon("O") THEN "O"
+          ELSE Draw
 
-\* AllRowsHaveThree == TRUE
-\*     \* /\ Len(<<x>> : x \in (DOMAIN board[1])) = 3
+OpenCellsAreOpen == OpenCells \subseteq Positions("-")
 
-OpenCellsAreOpen ==
-    /\ \A <<row, col>> \in OpenCells : board[row][col] = "-" 
+BoardFull == Cardinality(OpenCells) = 0
 
-Xs ==
-    /\ \A <<row, col>> \in AllCells : board[row][col] = "X" 
+GameEnded == BoardFull \/ PlayerWon("X") \/ PlayerWon("O")
 
-Os ==
-    /\ \A <<row, col>> \in AllCells : board[row][col] = "O" 
 
 CellsHaveValidMarks == 
-    /\ \A row \in DOMAIN board : \A col \in DOMAIN board[row] : board[row][col] \in Marks
+    /\ \A <<row, col>> \in AllCells : board[row][col] \in Marks
 
 TypeOk == 
     /\ CellsHaveValidMarks
@@ -73,19 +84,18 @@ TypeOk ==
 switchPlayer == IF currentPlayer = "X" THEN currentPlayer' = "O" ELSE currentPlayer' = "X"
 
 Next ==
-    \/ 
-        /\ currentPlayer = "X" \* Enabling condition
-        /\ PlayerXGoes
+    \/ ~GameEnded
+        /\ 
+            \/ currentPlayer = "X" \* Enabling condition
+                /\ PlayerXGoes
+            \/ currentPlayer = "O"
+                /\ PlayerOGoes
         /\ switchPlayer
-    \/ 
-        /\ currentPlayer = "O"
-        /\ PlayerOGoes
-        /\ switchPlayer
-    \/
+    \/ GameEnded
+        /\ PrintT(Winner \o " won!")
+        /\ UNCHANGED vars
 
-\* A win is defined as 1 player getting verticle row, horizontal row, or cross
-XWins == Xs \in WinningPositions
-OWins == Xs \in WinningPositions
+Spec == Init /\ [][Next]_vars
 \* How can I get a REPL?
 
 
