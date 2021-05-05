@@ -35,7 +35,6 @@ CellIsOpen(idx) == board[idx[1]][idx[2]] = "-"
 
 OpenCells == {idx \in AllCells : CellIsOpen(idx)}
 
-Draw == "No Winner. It's a Draw."
 
 Marks == {"X", "O", "-"}
 
@@ -65,7 +64,7 @@ PlayerOGoes ==
    
 Winner == IF PlayerWon("X") THEN "X"
           ELSE IF PlayerWon("O") THEN "O"
-          ELSE Draw
+          ELSE "No Winner. It's a Draw."
 
 OpenCellsAreOpen == OpenCells \subseteq Positions("-")
 
@@ -92,7 +91,11 @@ Next ==
                 /\ PlayerOGoes
         /\ switchPlayer
     \/ GameEnded
-        /\ PrintT(Winner \o " won!")
+        /\ 
+            \/ Winner \in {"X", "O"}
+                /\ PrintT(Winner \o " won!")
+            \/ Winner \notin {"X", "O"}
+                /\ PrintT(Winner)
         /\ UNCHANGED vars
 
 Spec == Init /\ [][Next]_vars
