@@ -9,7 +9,8 @@ vars == <<board, currentPlayer>>
 Init == /\ board = << 
             <<"-", "-", "-">>,
             <<"-", "-", "-">>,
-            <<"-", "-", "-">> >>
+            <<"-", "-", "-">> 
+           >>
         /\ currentPlayer = "X"
 
 WinningPositions == 
@@ -27,11 +28,16 @@ WinningPositions ==
         \* Diagonal Wins
         {<<1, 1>>, <<2, 2>>, <<3, 3>>},
         {<<1, 3>>, <<2, 2>>, <<3, 1>>}
+
     }
         
 AllCells == (DOMAIN board) \X (DOMAIN board[1])
 
-CellIsOpen(idx) == board[idx[1]][idx[2]] = "-"
+CellIsOpen(idx) == board[idx[1]][idx[2]] /= "-"
+
+
+
+
 
 OpenCells == {idx \in AllCells : CellIsOpen(idx)}
 
@@ -99,11 +105,14 @@ Next ==
         /\ UNCHANGED vars
 
 Spec == Init /\ [][Next]_vars
-\* How can I get a REPL?
+
+\* Study Questions
+\* How can I get a REPL? -> Jupiter Notebooks
 
 
 
 \* TODO
-\* 1. Define what win, or finished/full means
-\* 2. A game finished. 
+\* DONE! 1. Define what win, or finished/full means
+\* 2. Define strageties
+\* 3. Specifiy a probable winner given stragties
 ====
