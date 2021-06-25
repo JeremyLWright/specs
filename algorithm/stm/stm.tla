@@ -2,9 +2,11 @@
 
 EXTENDS Integers, Sequences, FiniteSets
 
-VARIABLES box, step
+VARIABLES box 
 
-vars == <<box, step>>
+WriteValues == 1..5
+
+vars == <<box>>
 
 BoxStates == {"uncommitted", "committed", "canceled"}
 
@@ -18,34 +20,24 @@ Reset == box' = [box EXCEPT !["value"] = box["initial"]]
 
 Cancel == box' = [ box EXCEPT !["state"] = "canceled"]
 
-SetValue == \E value \in {1,2,3,5} : 
-    box' = [ box EXCEPT !["value"] = value ]
+SetValue(x) == box' = [ box EXCEPT !["value"] = x ]
 
 
 Init == 
     /\ box = [value |-> 4, state |-> "uncommitted", initial |-> 4]
-    /\ step = 1
 
 Committed == box["state"] = "committed"
 
-GiveUp == step > 4
 
-NextOp == step' = step + 1
 
-Next == \/ ~GiveUp
-            \/ ~Committed  
-                /\ SetValue 
-                    /\ NextOp
-                /\ Commit   
-                    /\ NextOp
-                /\ Reset    
-                    /\ NextOp
-                /\ Cancel   
-                    /\ NextOp
-            \/ Committed 
-                /\ UNCHANGED vars
-        \/ GiveUp
-            /\ UNCHANGED  vars
+Next == \/ ~Committed 
+            /\ 
+                \/ Cancel   
+                \/ \E x \in WriteValues : SetValue(x)
+                \/ Commit   
+                \/ Reset    
+        \/ Committed 
+            /\ UNCHANGED vars
    
 Spec == Init /\ [][Next]_vars
 
@@ -55,6 +47,10 @@ InitialValueNeverChanges == box["initial"] = 4 \* How can I express this?
 
 TypeOk == /\ BoxStatesAreValid
           /\ InitialValueNeverChanges
+
+
+        \* Express an invariation for john's lost write case, 2 -> 3 -> 2 (why is this bad?)
+
     
 
 ==================================================================
