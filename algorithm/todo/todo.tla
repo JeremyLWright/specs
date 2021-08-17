@@ -38,15 +38,19 @@ Init ==
     /\ todoList = <<>>
 
 AddItem == 
-    \E task \in (Tasks \ ToSet(todoList)) : todoList' = Append(todoList, task)
+    \E task \in {Tasks : g \notin ToSet(todoList) } : todoList' = Append(todoList, task)
+    \* \E task \in {g \in Tasks : g \notin ToSet(todoList) } : todoList' = Append(todoList, task)
 
 
+ItemsLeftToDo == (Tasks \ ToSet(todoList)) /= {}
 
 Next ==
-    
-    /\ AddItem
+    \/ ItemsLeftToDo
+        /\ AddItem
+    \/ ~ItemsLeftToDo
+        /\ UNCHANGED vars
 
-DebugToDoTooLong == Len(todoList) < 6
+DebugToDoTooLong == Len(todoList) < 2
 
 Spec == Init /\ [][Next]_vars
 
