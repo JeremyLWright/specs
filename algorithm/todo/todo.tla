@@ -1,5 +1,5 @@
 ---- MODULE todo ----
-EXTENDS TLC, Sequences, FiniteSets, Integers
+EXTENDS TLC, Sequences, FiniteSets, Integers 
 
 \* 1. Item 
 \*      Item has state done/not-done
@@ -36,9 +36,20 @@ EXTENDS TLC, Sequences, FiniteSets, Integers
 \* 3. re-order them. (priority)
 
 
-VARIABLES todoList 
+VARIABLES itemDone, itemRank
 
 CONSTANT Tasks
+
+
+\* Imagine list on phone
+\* - Groceries              (order: 0.2)
+\* - Practice Guitar        (order: 0.255)
+\* - Pick up kids           (order: 0.25)
+
+\*ItemIsDone == (Groceries :> True)
+\*
+\*ItemRank == (Groceries :> 0.2)
+\* TLC doesn't support reals, so we will model 0.0 to 1.0 as 0 to 100 (prentend fixed point)
 
 
 
@@ -53,17 +64,27 @@ Range(s) ==
       
 
 
-vars == <<todoList>>
+vars == <<itemDone, itemRank>>
+
+TodoListItems == DOMAIN itemDone
+
+NotInTodoList == {t \in Tasks : t \notin TodoListItems } 
+
+MaxRank == Cardinality(TodoListItems)
+
 
 Init == 
-    /\ todoList = <<>>
+    /\ itemDone = [i \in {} |-> FALSE]
+    /\ itemRank = [i \in {} |-> 0]
 
 AddItem == 
-    \*\E task \in {Tasks : g \notin ToSet(todoList) } : todoList' = Append(todoList, task)
-    \E task \in {g \in Tasks : g \notin Range(todoList) } : todoList' = Append(todoList, task)
+    \E task \in NotInTodoList : 
+        /\ itemDone' = itemDone @@ (task :> FALSE) \* This is not [ task |-> FALSE ], since this would treat the variable name 'task' as literally the word task.
+        /\ itemRank' = itemRank @@ (task :> MaxRank)
 
 
-ItemsLeftToDo == (Tasks \ Range(todoList)) /= {}
+
+ItemsLeftToDo == (Tasks \ TodoListItems) /= {}
 
 Next ==
     \/ ItemsLeftToDo
@@ -71,7 +92,11 @@ Next ==
     \/ ~ItemsLeftToDo
         /\ UNCHANGED vars
 
-DebugToDoTooLong == Len(todoList) < 2
+
+\* Becomes a Foreign Key in DB
+ItemsInDoneAreAlsoInRank == DOMAIN itemDone = DOMAIN itemRank
+
+DebugToDoTooLong == Cardinality(DOMAIN itemDone) < 2
 
 Spec == Init /\ [][Next]_vars
 
