@@ -5,7 +5,7 @@ EXTENDS TLC, Sequences, FiniteSets, Integers
 \*      Item has state done/not-done
 \* 2. Actor (superflueous)
 \*      Actor can mark an item as resolved.
-\*      Actor can make item as not resolved.
+\*      Actor can mark item as not resolved.
 \* 3. List
 \*      Add Item
 \*      (step 2) Remove Item
@@ -27,6 +27,8 @@ EXTENDS TLC, Sequences, FiniteSets, Integers
 \* Wife moves item to bottom of list.
 \* You mark item done.
 \* Once all replicas are synchronized, item is eventually marked done. 
+\*      Done items don't have an order. 
+\* Once an item is done it cannot be marked undown. 
 
 
 \* List Actions
@@ -49,7 +51,7 @@ CONSTANT Tasks
 \*ItemIsDone == (Groceries :> True)
 \*
 \*ItemRank == (Groceries :> 0.2)
-\* TLC doesn't support reals, so we will model 0.0 to 1.0 as 0 to 100 (prentend fixed point)
+\* TLC doesn't support reals, so we will model 0.0 to 1.0 as 0 to 1000 (prentend fixed point)
 
 
 
@@ -82,21 +84,46 @@ AddItem ==
         /\ itemDone' = itemDone @@ (task :> FALSE) \* This is not [ task |-> FALSE ], since this would treat the variable name 'task' as literally the word task.
         /\ itemRank' = itemRank @@ (task :> MaxRank)
 
+MarkItemDone ==
+    \E task \in TodoListItems :
+        /\ itemDone' = itemDone @@ (task :> TRUE)
+        /\ UNCHANGED itemRank
+
 
 
 ItemsLeftToDo == (Tasks \ TodoListItems) /= {}
 
+ItemOnToDoList == Cardinality(TodoListItems) > 0
+
 Next ==
-    \/ ItemsLeftToDo
-        /\ AddItem
-    \/ ~ItemsLeftToDo
-        /\ UNCHANGED vars
+    \/ ItemOnToDoList
+        /\ MarkItemDone
+    \/ ~ItemOnToDoList
+        /\ 
+            \/ ItemsLeftToDo
+                /\ AddItem
+            \/ ~ItemsLeftToDo
+                /\ UNCHANGED vars
 
 
 \* Becomes a Foreign Key in DB
 ItemsInDoneAreAlsoInRank == DOMAIN itemDone = DOMAIN itemRank
 
-DebugToDoTooLong == Cardinality(DOMAIN itemDone) < 2
+DebugToDoTooLong == Cardinality(DOMAIN itemDone) < 10
+
+\* If there are tasks not on the todo list
+\*  do something
+
+\* If there is something to be done
+\* if there is something to be moved
+\* unchanged...
+
+DebugItemIsNeverDone == 
+    \/ Cardinality(TodoListItems) = 0
+    \/ \E task \in TodoListItems : itemDone[task] = FALSE
+
+\* If something is placed on the todo list, eventually it is marked done.
+\* Temporal formula.
 
 Spec == Init /\ [][Next]_vars
 
