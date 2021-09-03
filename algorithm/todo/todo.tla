@@ -86,24 +86,23 @@ AddItem ==
 
 MarkItemDone ==
     \E task \in TodoListItems :
-        /\ itemDone' = itemDone @@ (task :> TRUE)
+        /\ itemDone' = [itemDone EXCEPT ![task] = TRUE]
         /\ UNCHANGED itemRank
-
 
 
 ItemsLeftToDo == (Tasks \ TodoListItems) /= {}
 
 ItemOnToDoList == Cardinality(TodoListItems) > 0
 
+ItemOnToDoListNotDone == \E item \in Range(itemDone) : item = FALSE 
+
 Next ==
-    \/ ItemOnToDoList
+    \/ ItemOnToDoListNotDone
         /\ MarkItemDone
-    \/ ~ItemOnToDoList
-        /\ 
-            \/ ItemsLeftToDo
-                /\ AddItem
-            \/ ~ItemsLeftToDo
-                /\ UNCHANGED vars
+    \/ ItemsLeftToDo
+        /\ AddItem
+    \/ ~(ItemsLeftToDo \/ ItemOnToDoListNotDone)
+        /\ UNCHANGED vars
 
 
 \* Becomes a Foreign Key in DB
