@@ -69,18 +69,6 @@ Termination == <>(pc = "Done")
 
 \* END TRANSLATION 
 
-\*Next == 
-\*    \/ IndexDone 
-\*    \/ ~IndexDone
-\*        /\  IF input[idx] < input[idx+1] 
-\*            THEN 
-\*                Exchange(idx, idx+1)
-\*            ELSE
-\*                UNCHANGED <<input>>
-\*        /\ idx' = idx + 1
-\*
-\*
-\*Spec == Init /\ [][Next]_vars
 TypeOK == /\ i \in 1..N
           /\ j \in 1..N
           /\ A \in [1..N -> Int]
@@ -93,9 +81,12 @@ IsSorted == \A a \in 1..N:
 
 ComputationalComplexity == totalSteps <= N * N
 
+IsSortedAlex == \A a,b \in 1..N: a < b => A[a] <= A[b]
 
 
 
-EventuallySorted == pc # "Done" \/ (pc="Done" /\ IsSorted /\ ComputationalComplexity)
+EventuallySorted == pc="Done" => IsSortedAlex
+
+\* "Material Conditional"
             
 ==== 
