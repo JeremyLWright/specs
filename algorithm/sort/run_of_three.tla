@@ -1,6 +1,6 @@
 ---- MODULE run_of_three ----
 
-EXTENDS TLC, sort
+EXTENDS TLC, sort \* bubble_sort
 
 
 
