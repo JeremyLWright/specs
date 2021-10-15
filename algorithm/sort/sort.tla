@@ -1,37 +1,40 @@
 ---- MODULE sort ----
-EXTENDS TLC, Integers, Sequences, SequencesExt, FiniteSetsExt
+
+EXTENDS TLC, Integers, Folds, Sequences, SequencesExt, FiniteSetsExt
+
 
 CONSTANTS N
 
 VARIABLES A, steps
 
-RECURSIVE GenericSort(_)
-GenericSort(as) == 
+RECURSIVE SortByMagic(_)
+SortByMagic(as) == 
     IF as = <<>> THEN <<>>
     ELSE 
         LET 
             minValue == Min(ToSet(as))
-        IN <<minValue>> \o GenericSort( Remove(as, minValue) )
+            asWithoutMin == Remove(as, minValue)
+        IN <<minValue>> \o SortByMagic( asWithoutMin )
     
 vars == <<A, steps>>
 
-Init == /\ steps = 0
-        \* /\ A = <<7, 9, 1, 4, 5>>
-        /\ A \in [1..N -> Int]
+Init == /\ steps = "Start"
+        \*/\ A = <<7, 9, 1, 4, 5>>
+         /\ A \in [1..N -> Int]
 
 Next == 
-    \/ steps = 0
-        /\ A' = GenericSort(A) 
-        /\ steps = 1
+    \/ steps = "Start"
+        /\ A' = SortByMagic(A) 
+        /\ steps' = "Done"
     \/ UNCHANGED vars
 
 Spec == Init /\ [][Next]_vars
 
-IsSortedAlex == \A a,b \in 1..N: a < b => A[a] <= A[b]
+IsSorted == \A a,b \in 1..N: a < b => A[a] <= A[b]
 
-IsDone == steps = 1
+IsDone == steps = "Done"
 
-SortedWhenDone == IsDone => IsSortedAlex
+SortedWhenDone == IsDone => IsSorted
 
 TypeOK == Len(A) = N
 

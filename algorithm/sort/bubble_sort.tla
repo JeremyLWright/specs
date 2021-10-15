@@ -1,13 +1,14 @@
 ---- MODULE bubble_sort ----
 
-EXTENDS Sequences, Integers, TLC
+EXTENDS SequencesExt, Sequences, Integers, TLC
 
 CONSTANTS N 
 ASSUME NonEmptyArray == N \in Nat /\ N >= 1
 
 
 (*--fair algorithm BubbleSort {
-    variables A \in [1..N -> Int], A0 = A, i = 1, j = 1, totalSteps = 0;
+    variables A = <<1,3,2,2,3>>, A0 = A, i = 1, j = 1, totalSteps = 0;
+    \* variables A \in [1..N -> Int], A0 = A, i = 1, j = 1, totalSteps = 0;
     { while (i < N) {
         j := i + 1;
         while (j > 1 /\ A[j - 1] > A[j]) {
@@ -21,13 +22,13 @@ ASSUME NonEmptyArray == N \in Nat /\ N >= 1
     }
 }
 *)
-\* BEGIN TRANSLATION (chksum(pcal) = "7c28162a" /\ chksum(tla) = "1ca5e7c3")
+\* BEGIN TRANSLATION (chksum(pcal) = "7c28162a" /\ chksum(tla) = "dcb53309")
 VARIABLES A, A0, i, j, totalSteps, pc
 
 vars == << A, A0, i, j, totalSteps, pc >>
 
 Init == (* Global variables *)
-        /\ A \in [1..N -> Int]
+        /\ A = <<1,3,2,2,3>>
         /\ A0 = A
         /\ i = 1
         /\ j = 1
@@ -75,22 +76,19 @@ TypeOK == /\ i \in 1..N
           /\ A0 \in [1..N -> Int]
           /\ pc \in {"Lbl_1", "Lbl_2", "Done"}
 
-IsSorted == \A a \in 1..N: 
-                \A b \in a..N:
-                    A[a] <= A[b]
+IsSorted == \A a,b \in 1..N: a < b => A[a] <= A[b]
 
 ComputationalComplexity == totalSteps <= N * N
 
-IsSortedAlex == \A a,b \in 1..N: a < b => A[a] <= A[b]
 
-
-
-EventuallySorted == pc="Done" => IsSortedAlex
+SortedWhenDone == pc="Done" => IsSorted
 
 
 Mapping == 
     INSTANCE sort WITH 
-        
+        \* magic sort side <- bubble sort side
+        A <- IF pc = "Done" THEN A ELSE A0,
+        steps <- IF pc = "Done" THEN "Done" ELSE "Start"
 
 Refinement == Mapping!Spec
 
