@@ -5,38 +5,32 @@ EXTENDS TLC, Integers, Folds, Sequences, SequencesExt, FiniteSetsExt
 
 CONSTANTS N
 
-VARIABLES A, steps
+VARIABLES A, step
 
-RECURSIVE SortByMagic(_)
-SortByMagic(as) == 
-    IF as = <<>> THEN <<>>
-    ELSE 
-        LET 
-            minValue == Min(ToSet(as))
-            asWithoutMin == Remove(as, minValue)
-        IN <<minValue>> \o SortByMagic( asWithoutMin )
-    
-vars == <<A, steps>>
+IsSorted(seq) == \A a,b \in 1..Len(seq): a <= b => seq[a] <= seq[b]
+ApplyIndices(seq, indices) == [ i \in 1..Len(seq) |-> seq[indices[i]]]
+PermutationsSeq(seq) == {ApplyIndices(seq, p) : p \in Permutations(1..Len(seq))}
 
-Init == /\ steps = "Start"
-        \*/\ A = <<7, 9, 1, 4, 5>>
-         /\ A \in [1..N -> Int]
+SortByMagic(seq) == CHOOSE p \in PermutationsSeq(seq) : IsSorted(p)
+
+vars == <<A, step>>
+
+Init == /\ step = "Start"
+        /\ A \in [1..N -> Int]
 
 Next == 
-    \/ steps = "Start"
+    \/ step = "Start"
         /\ A' = SortByMagic(A) 
-        /\ steps' = "Done"
-    \/ UNCHANGED vars
+        /\ step' = "Done"
+    \/ 
+        /\ UNCHANGED vars
 
 Spec == Init /\ [][Next]_vars
 
-IsSorted == \A a,b \in 1..N: a < b => A[a] <= A[b]
+IsDone == step = "Done"
 
-IsDone == steps = "Done"
-
-SortedWhenDone == IsDone => IsSorted
+SortedWhenDone == IsDone => IsSorted(A)
 
 TypeOK == Len(A) = N
-
 
 ====

@@ -7,8 +7,7 @@ ASSUME NonEmptyArray == N \in Nat /\ N >= 1
 
 
 (*--fair algorithm BubbleSort {
-    variables A = <<1,3,2,2,3>>, A0 = A, i = 1, j = 1, totalSteps = 0;
-    \* variables A \in [1..N -> Int], A0 = A, i = 1, j = 1, totalSteps = 0;
+    variables A \in [1..N -> Int], A0 = A, i = 1, j = 1, totalSteps = 0;
     { while (i < N) {
         j := i + 1;
         while (j > 1 /\ A[j - 1] > A[j]) {
@@ -22,13 +21,13 @@ ASSUME NonEmptyArray == N \in Nat /\ N >= 1
     }
 }
 *)
-\* BEGIN TRANSLATION (chksum(pcal) = "7c28162a" /\ chksum(tla) = "dcb53309")
+\* BEGIN TRANSLATION (chksum(pcal) = "7c28162a" /\ chksum(tla) = "1ca5e7c3")
 VARIABLES A, A0, i, j, totalSteps, pc
 
 vars == << A, A0, i, j, totalSteps, pc >>
 
 Init == (* Global variables *)
-        /\ A = <<1,3,2,2,3>>
+        /\ A \in [1..N -> Int]
         /\ A0 = A
         /\ i = 1
         /\ j = 1
@@ -88,7 +87,7 @@ Mapping ==
     INSTANCE sort WITH 
         \* magic sort side <- bubble sort side
         A <- IF pc = "Done" THEN A ELSE A0,
-        steps <- IF pc = "Done" THEN "Done" ELSE "Start"
+        step <- IF pc = "Done" THEN "Done" ELSE "Start"
 
 Refinement == Mapping!Spec
 
