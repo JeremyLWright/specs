@@ -5,7 +5,7 @@ EXTENDS TLC, Integers, Folds, Sequences, SequencesExt, FiniteSetsExt
 
 CONSTANTS N
 
-VARIABLES A, step
+VARIABLES A 
 
 IsSorted(seq) == \A a,b \in 1..Len(seq): a <= b => seq[a] <= seq[b]
 ApplyIndices(seq, indices) == [ i \in 1..Len(seq) |-> seq[indices[i]]]
@@ -13,23 +13,13 @@ PermutationsSeq(seq) == {ApplyIndices(seq, p) : p \in Permutations(1..Len(seq))}
 
 SortByMagic(seq) == CHOOSE p \in PermutationsSeq(seq) : IsSorted(p)
 
-vars == <<A, step>>
+vars == <<A>>
 
-Init == /\ step = "Start"
-        /\ A \in [1..N -> Int]
+Init == A \in [1..N -> Int]
 
-Next == 
-    \/ step = "Start"
-        /\ A' = SortByMagic(A) 
-        /\ step' = "Done"
-    \/ 
-        /\ UNCHANGED vars
+Next == A' = SortByMagic(A) 
 
-Spec == Init /\ [][Next]_vars
-
-IsDone == step = "Done"
-
-SortedWhenDone == IsDone => IsSorted(A)
+Spec == Init /\ [][Next]_vars /\ <>[]IsSorted(A)
 
 TypeOK == Len(A) = N
 
