@@ -45,11 +45,14 @@ TypeOK ==
     /\ sodaMachine >= 0
     /\ IWantSoda \in {TRUE, FALSE}
     /\ IHaveSoda \in {TRUE, FALSE}
+   
+IEventuallyGetSoda == IHaveMoney => <>IHaveSoda
+INeverGetSoda == IHaveSoda = FALSE
 
 
 =============================================================================
 \* Modification History
-\* Last modified Tue Nov 02 19:07:12 MST 2021 by jeremy
+\* Last modified Tue Nov 09 11:50:44 MST 2021 by jeremy
 \* Created Tue Nov 02 18:15:25 MST 2021 by jeremy
 
 
