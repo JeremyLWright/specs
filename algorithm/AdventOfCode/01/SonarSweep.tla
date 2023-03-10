@@ -28,39 +28,41 @@ deeper water by an ocean current or a fish or something.
 To do this, count the number of times a depth measurement increases from the previous
  measurement. (There is no measurement before the first measurement.)
  ***************************************************************************)
-EXTENDS Naturals, Sequences, FiniteSets, TLC
-
-ToSet(s) ==
-  (*************************************************************************)
-  (* The image of the given sequence s. Cardinality(ToSet(s)) <= Len(s)    *)
-  (* see https://en.wikipedia.org/wiki/Image_(mathematics)                 *)
-  (*************************************************************************)
-  { s[i] : i \in DOMAIN s }
+EXTENDS Naturals, Sequences, FiniteSets, TLC, SequencesExt
 
 
 \* SonarDepthMeasurements is the input sequence of our sonar measurements
-CONSTANT SonarDepthMeasurements 
+
+CONSTANT NumberOfMeasurements
 
 \* We expect that all measurements are positive values. 
-ASSUME \A measurement \in ToSet(SonarDepthMeasurements) : measurement \in Nat
+\* ASSUME \A measurement \in ToSet(SonarDepthMeasurements) : measurement \in Nat
+ASSUME NumberOfMeasurements > 0
 
-VARIABLES NumberOfIncreases
+SonarDepthMeasurements == [1..NumberOfMeasurements -> Nat]
 
-vars == <<NumberOfIncreases>>
+VARIABLES NumberOfIncreases, WorkingSample
 
-PairwiseSubtract(as, bs) == {as[i] - bs[i] : i \in DOMAIN as}
+vars == <<NumberOfIncreases, WorkingSample>>
 
-DeltaMeasurements == PairwiseSubtract(Tail(SonarDepthMeasurements), SonarDepthMeasurements)
+NumberOfMeasurementIncreases(samples) == Cardinality({i \in 2..Len(samples) : samples[i] > samples[i-1]})
 
-Init == NumberOfIncreases = 0
+Init == /\ NumberOfIncreases = 0
+        /\ \A sample \in SonarDepthMeasurements : WorkingSample = sample
 
-Next == /\ NumberOfIncreases' = Cardinality({measure \in DeltaMeasurements : measure > 0})
+
+Next == /\ NumberOfIncreases' = NumberOfMeasurementIncreases(WorkingSample)
         /\ Print(NumberOfIncreases, TRUE)
 
 Spec == Init /\ [][Next]_vars /\ WF_vars(Next)
 
+CountOfAnySetIsLengthOfSet == Cardinality(ToSet(WorkingSample)) = Len(SetToSeq(ToSet(WorkingSample)))
+
+
+IsCorrect == /\ CountOfAnySetIsLengthOfSet
+
 TypeOK == /\ NumberOfIncreases >= 0
-          /\ Cardinality(DeltaMeasurements) = Len(SonarDepthMeasurements) - 1 
+\*          /\ Cardinality(DeltaMeasurements) = Len(SonarDepthMeasurements) - 1 
 
 
 

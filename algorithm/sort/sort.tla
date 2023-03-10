@@ -5,7 +5,7 @@ EXTENDS TLC, Integers, Folds, Sequences, SequencesExt, FiniteSetsExt
 
 CONSTANTS N
 
-VARIABLES A 
+VARIABLES A
 
 IsSortedAsc(seq) == \A a,b \in 1..N: a < b => seq[a] <= seq[b]
 IsSortedDes(seq) == \A a,b \in 1..N: a < b => seq[a] >= seq[b]
@@ -17,14 +17,18 @@ SortByMagic(seq) == CHOOSE p \in PermutationsSeq(seq) : IsSortedAsc(p)
 
 vars == <<A>>
 
-Init == A = <<2,3,1,4,4>> \* \in [1..N -> Int]
+Init == A = <<2,1,3,4,5>>
+
+Init2 == A \in [1..N -> Nat]
+
 
 Next == A' = SortByMagic(A) 
+
 
 EventuallySortedDes ==  <>[]IsSortedDes(A) 
 EventuallySortedAsc ==   <>[]IsSortedAsc(A)
 
-Spec == Init /\ [][Next]_vars /\ WF_vars(Next)
+Spec == Init2 /\ [][Next]_vars /\ WF_vars(Next)
 
 TypeOK == Len(A) = N
 

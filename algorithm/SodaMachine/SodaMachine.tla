@@ -1,4 +1,4 @@
-------------------------- MODULE SodaMachinePublish -------------------------
+------------------------- MODULE SodaMachine -------------------------
 
 EXTENDS Integers, Sequences, TLC
 
@@ -53,5 +53,5 @@ IEventuallyGetSoda == [](IHaveMoney /\ SodaMachineHasSoda => <>IHaveSoda) \* Alw
 
 =============================================================================
 \* Modification History
-\* Last modified Sun Nov 14 16:14:08 MST 2021 by jeremy
+\* Last modified Fri Mar 18 11:24:02 MST 2022 by jeremy
 \* Created Sun Nov 14 15:37:46 MST 2021 by jeremy

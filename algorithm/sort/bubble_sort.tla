@@ -7,8 +7,7 @@ ASSUME NonEmptyArray == N \in Nat /\ N >= 1
 
 
 (*--fair algorithm BubbleSort {
-    \*variables A = <<4,1,4,2,5>>, A0 = A, i = 1, j = 1, totalSteps = 0;
-    variables A \in [1..N -> Int], A0 = A, i = 1, j = 1, totalSteps = 0;
+    variables A \in [1..N -> Nat], A0 = A, i = 1, j = 1, totalSteps = 0;
     { while (i < N) {
         j := i + 1;
         while (j > 1 /\ A[j - 1] > A[j]) {
