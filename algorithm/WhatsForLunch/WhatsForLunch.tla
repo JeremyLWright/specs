@@ -2,81 +2,81 @@
 
 EXTENDS Integers, Sequences, SequencesExt, TLC
 
-VARIABLES ProposerStates, AcceptorState, ProposalQueue, LunchPlaces
+VARIABLES ProposerStates, AcceptorState, AcceptorQueue, ProposerQueues 
 
 CONSTANT NULL
-CONSTANT PendingProposal
+CONSTANT LunchPlaces
 
-vars == <<ProposerStates, ProposalQueue, LunchPlaces, AcceptorState>>
+vars == <<ProposerStates, AcceptorQueue, AcceptorState, ProposerQueues>>
 
 \* Acceptor pulls events from a queue
 \* Acceptor accepts the first event it sees
 \* once a value is accepted, it replies to all proposals 
 \* with the accepted value
 
-
-\* Proposer propose a value from their desired places to eat. 
-\* as long as i haven't heard from the acceptor, i could make a different proposal
-IHaventConfirmedPlaceForLunch(id) == ProposerStates[id] = NULL
-
-Propose(id) == 
-    \/ IHaventConfirmedPlaceForLunch(id) 
-        /\ \E lunchPlace \in LunchPlaces : 
-            /\ ProposalQueue' = Append(ProposalQueue, [address |-> id, proposal |-> lunchPlace ])
-            \* /\ ProposerStates' = [ProposerStates EXCEPT ![id] = PendingProposal] \* Seems dangerous... I don't know my value is committed
-        /\ UNCHANGED <<AcceptorState, LunchPlaces>>
-    \/ UNCHANGED <<AcceptorState, LunchPlaces, ProposerStates, ProposalQueue>>
+Propose == 
+    \E id \in DOMAIN ProposerStates : 
+        \/ Len(ProposerQueues[id]) > 0 /\ ProposerStates[id] = NULL
+                /\ LET msg == Head(ProposerQueues[id]) IN
+                    /\ ProposerQueues' = [ProposerQueues EXCEPT ![id] = Tail(ProposerQueues[id])]
+                    /\ ProposerStates' = [ProposerStates EXCEPT ![id] = msg]
+                    /\ UNCHANGED <<AcceptorState, AcceptorQueue>>
+        \/ Len(ProposerQueues[id]) > 0 /\ ProposerStates[id] /= NULL 
+                \* If I already heard where we're going, then ignore any new value. 
+                /\ ProposerQueues' = [ProposerQueues EXCEPT ![id] = Tail(ProposerQueues[id])]
+                /\ UNCHANGED <<AcceptorState, ProposerStates, AcceptorQueue>>
+        \/ Len(ProposerQueues[id]) = 0 /\ ProposerStates[id] = NULL 
+            /\ \E lunchPlace \in LunchPlaces : 
+                /\ AcceptorQueue' = Append(AcceptorQueue, [address |-> id, proposal |-> lunchPlace ])
+            /\ UNCHANGED <<AcceptorState, ProposerStates, ProposerQueues>>
+        \/ Len(ProposerQueues[id]) = 0 /\ ProposerStates[id] /= NULL 
+            /\ UNCHANGED vars
 
 \* If we've decided a value, respond to all future proposals with the value. 
+AcceptFirstProposal == 
+    Len(AcceptorQueue) > 0 /\ AcceptorState = NULL 
+        /\ LET msg == Head(AcceptorQueue) IN
+            /\ AcceptorState' = msg.proposal
+            /\ ProposerQueues' = [ProposerQueues EXCEPT ![msg.address] = Append(ProposerQueues[msg.address], msg.proposal) ]
+            /\ AcceptorQueue' = Tail(AcceptorQueue)
+            /\ UNCHANGED <<ProposerStates>>
+
+ReplyWithAcceptedValue ==
+    Len(AcceptorQueue) > 0 /\ AcceptorState /= NULL
+        /\ LET msg == Head(AcceptorQueue) IN
+            /\ ProposerQueues' = [ProposerQueues EXCEPT ![msg.address] = Append(ProposerQueues[msg.address], AcceptorState)]
+            /\ AcceptorQueue' = Tail(AcceptorQueue)
+            /\ UNCHANGED <<AcceptorState, ProposerStates>>
+
 Acceptor == 
-    \/ Len(ProposalQueue) > 0 /\ AcceptorState = NULL 
-            /\ LET msg == Head(ProposalQueue) IN
-                /\ AcceptorState' = msg.proposal
-                \* This doesn't work you cannot update part of a state /\ ProposerStates[msg.address]' = msg.proposal
-                /\ ProposerStates' = [ProposerStates EXCEPT ![msg.address] = msg.proposal]
-                /\ ProposalQueue' = Tail(ProposalQueue)
-                /\ UNCHANGED <<LunchPlaces>>
-    \/ Len(ProposalQueue) > 0 /\ AcceptorState /= NULL
-        /\ LET msg == Head(ProposalQueue) IN
-            /\ ProposerStates' = [ProposerStates EXCEPT ![msg.address] = AcceptorState]
-            /\ ProposalQueue' = Tail(ProposalQueue)
-        /\ UNCHANGED <<AcceptorState, LunchPlaces>>
+    \/ AcceptFirstProposal 
+    \/ ReplyWithAcceptedValue
     \/ UNCHANGED vars
-
-
-
 
 Init == 
     /\ AcceptorState = NULL
-    /\ ProposerStates = <<NULL, NULL, NULL>>
-    /\ ProposalQueue = <<>>
-    /\ LunchPlaces = {"Falafel", "Hamburgers"}
+    /\ ProposerStates = <<NULL, NULL>>
+    /\ AcceptorQueue = <<>>
+    /\ ProposerQueues = << <<>>, <<>> >>
 
 Next == 
-    \/ \E proposer \in DOMAIN ProposerStates : Propose(proposer)
+    \/ Propose 
     \/ Acceptor
 
-Spec == Init /\ [][Next]_vars /\ WF_vars(Next)
+Spec == Init /\ [][Next]_vars /\ WF_vars(Next) \* /\ SF_vars(Propose)
 
+
+Range(f) == {f[x] : x \in DOMAIN f}
 
 TypeOk ==
-    /\ AcceptorState = NULL 
-        \/ AcceptorState \in LunchPlaces
-\*TypeInvariant ==
-\*    /\ Money >= 0
-\*    /\ sodaMachine >= 0
-\*    /\ IWantSoda \in {TRUE, FALSE}
-\*    /\ IHaveSoda \in {TRUE, FALSE}
-    
-   
-\* cannot guarantee that not all proposers will propose 
-EventuallyConsensus == <>[](\A proposal \in DOMAIN ProposerStates: 
-    ProposerStates[proposal] = AcceptorState)
+    /\ AcceptorState \in {NULL} \union LunchPlaces
+    /\ Range(ProposerStates) \subseteq {NULL} \union LunchPlaces
 
-EventuallyAllProposersLearnTheSameValue == 
-    <>[](\E proposer \in DOMAIN ProposerStates: 
-        IF ProposerStates[proposer] /= NULL 
-        THEN ProposerStates[proposer] = AcceptorState 
-        ELSE ProposerStates[proposer] = PendingProposal)
+
+\* cannot guarantee that not all proposers will propose 
+\* EventuallyConsensus == <>[](\A proposal \in DOMAIN ProposerStates: ProposerStates[proposal] = AcceptorState)
+
+OnceAcceptedEventuallyEveryoneAgrees == AcceptorState /= NULL => <>[](Range(ProposerStates) = {AcceptorState})
+
 
 =============================================================================
