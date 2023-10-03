@@ -1,8 +1,19 @@
 ------------------------- MODULE WhatsForLunch -------------------------
 
+(* 
+ What's For lunch is a simple concensus algorithm. The premise is a driver and some number
+ of passengers are in a car driving to Lunch. A passenger shouts out a destination for lunch. The Driver 
+ accepts the first suggestion. All future proposals are ignored, and the driver responds with the 
+ initial decision.
+
+ Consensus is defined as all passengers holding the same destination as the driver, the acceptor. 
+*)
+
+
+
 EXTENDS Integers, Sequences, SequencesExt, TLC
 
-VARIABLES ProposerStates, AcceptorState, AcceptorQueue, ProposerQueues 
+VARIABLES ProposerStates, AcceptorState, AcceptorQueue, ProposerQueues
 
 CONSTANT NULL
 CONSTANT LunchPlaces
@@ -25,7 +36,7 @@ Propose ==
                 \* If I already heard where we're going, then ignore any new value. 
                 /\ ProposerQueues' = [ProposerQueues EXCEPT ![id] = Tail(ProposerQueues[id])]
                 /\ UNCHANGED <<AcceptorState, ProposerStates, AcceptorQueue>>
-        \/ Len(ProposerQueues[id]) = 0 /\ ProposerStates[id] = NULL 
+        \/ Len(ProposerQueues[id]) = 0 /\ ProposerStates[id] = NULL /\ Len(AcceptorQueue) < 3
             /\ \E lunchPlace \in LunchPlaces : 
                 /\ AcceptorQueue' = Append(AcceptorQueue, [address |-> id, proposal |-> lunchPlace ])
             /\ UNCHANGED <<AcceptorState, ProposerStates, ProposerQueues>>
@@ -51,7 +62,8 @@ ReplyWithAcceptedValue ==
 Acceptor == 
     \/ AcceptFirstProposal 
     \/ ReplyWithAcceptedValue
-    \/ UNCHANGED vars
+    \/ Len(AcceptorQueue) = 0 
+        /\ UNCHANGED vars
 
 Init == 
     /\ AcceptorState = NULL
@@ -72,11 +84,14 @@ TypeOk ==
     /\ AcceptorState \in {NULL} \union LunchPlaces
     /\ Range(ProposerStates) \subseteq {NULL} \union LunchPlaces
 
+QueuesAreTooBig == 
+    /\ Len(ProposerQueues[1]) < 10
+    /\ Len(ProposerQueues[2]) < 10
 
-\* cannot guarantee that not all proposers will propose 
-\* EventuallyConsensus == <>[](\A proposal \in DOMAIN ProposerStates: ProposerStates[proposal] = AcceptorState)
 
 OnceAcceptedEventuallyEveryoneAgrees == AcceptorState /= NULL => <>[](Range(ProposerStates) = {AcceptorState})
 
+EventuallyAcceptorDecides == <>[](AcceptorState /= NULL)
 
-=============================================================================
+
+============================================================================
