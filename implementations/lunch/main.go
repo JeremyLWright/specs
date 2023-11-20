@@ -25,7 +25,7 @@ func Acceptor(c chan message, quit chan int) {
 		select {
 		case msg := <-c:
 			fmt.Printf("Received Proposal: %v\n", msg.suggestion)
-			if decidedValue == "" {
+			if decidedValue == "" && msg.suggestion != "" {
 				decidedValue = msg.suggestion
 				msg.address <- decidedValue
 				fmt.Printf("Decided value: %v\n", decidedValue)
@@ -78,17 +78,16 @@ func main() {
 	proposerDone := make(chan string)
 	exitQueue := make(chan int)
 
-	fmt.Println("One")
 	go Acceptor(proposerQueue, exitQueue)
 	for i := 0; i < numberOfProposers; i++ {
 		go Proposer(proposerQueue, proposerDone)
 	}
-	fmt.Println("Two")
 	i := 0
 	for {
 		k := <-proposerDone
 		if k == "done" {
 			i = i + 1
+			fmt.Print(i)
 		}
 		if i == numberOfProposers {
 			break
